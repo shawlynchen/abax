@@ -10,6 +10,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - Euler-Mascheroni constant.
   - Stirling series coefficients for asymptotic expansions.
 - **Special Functions**:
+  - `gamma(x)`: Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> computed with the Lanczos approximation and reflection formula.
   - `gammaln(x)`: Natural logarithm of the Gamma function <math><mi>ln</mi><mo>(</mo><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></math> using Stirling's approximation for high precision.
 
 ## Usage
@@ -18,7 +19,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.0"
+abax = "0.1.1"
 ```
 
 ## License
