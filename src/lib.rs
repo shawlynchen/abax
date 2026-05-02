@@ -9,12 +9,14 @@ mod gamma;
 mod gammaln;
 mod trigamma;
 mod tetragamma;
+mod psi;
 
 pub use digamma::digamma;
 pub use gamma::gamma;
 pub use gammaln::gammaln;
 pub use trigamma::trigamma;
 pub use tetragamma::tetragamma;
+pub use psi::psi;
 
 #[cfg(test)]
 mod tests {
@@ -45,3 +47,4 @@ mod tests {
         assert!((tetragamma(1.0) + 2.4041138063191885).abs() < 1e-13);
     }
 }
+
