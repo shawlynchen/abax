@@ -7,10 +7,12 @@ mod consts;
 mod digamma;
 mod gamma;
 mod gammaln;
+mod trigamma;
 
 pub use digamma::digamma;
 pub use gamma::gamma;
 pub use gammaln::gammaln;
+pub use trigamma::trigamma;
 
 #[cfg(test)]
 mod tests {
@@ -29,5 +31,10 @@ mod tests {
     #[test]
     fn test_digamma_export() {
         assert!((digamma(1.0) + 0.5772156649015329).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_trigamma_export() {
+        assert!((trigamma(1.0) - 1.6449340668482264).abs() < 1e-14);
     }
 }
