@@ -1,6 +1,6 @@
 [package]
 name = "abax"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "A lightweight Rust library providing high-precision mathematical constants and special functions, including Bernoulli numbers, Riemann Zeta values, and the Gamma function."
 license = "MIT"
