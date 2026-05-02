@@ -4,8 +4,10 @@
 //! This library includes Bernoulli numbers (<math><msub><mi>B</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>), Riemann Zeta values (<math><mi>ζ</mi><mo>(</mo><mi>s</mi><mo>)</mo></math>), and Stirling series coefficients.
 
 mod consts;
+mod gamma;
 mod gammaln;
 
+pub use gamma::gamma;
 pub use gammaln::gammaln;
 
 #[cfg(test)]
@@ -15,5 +17,10 @@ mod tests {
     #[test]
     fn test_gammaln_export() {
         assert_eq!(gammaln(1.0), 0.0);
+    }
+
+    #[test]
+    fn test_gamma_export() {
+        assert_eq!(gamma(5.0), 24.0);
     }
 }
