@@ -56,7 +56,11 @@ fn psi_high_order(k: usize, x: f64) -> f64 {
     // Recurrence: ψ^(m)(x) = ψ^(m)(x+1) - (-1)^m m! / x^(m+1)
     while xx < 8.0 {
         let denom = xx.powi(m + 1);
-        let step = if k.is_multiple_of(2) { -fact / denom } else { fact / denom };
+        let step = if k.is_multiple_of(2) {
+            -fact / denom
+        } else {
+            fact / denom
+        };
         acc += step;
         xx += 1.0;
 
@@ -80,14 +84,20 @@ fn psi_high_order(k: usize, x: f64) -> f64 {
     acc + sign * fact * sum
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     fn assert_approx_eq(actual: f64, expected: f64, eps: f64) {
         let d = (actual - expected).abs();
-        assert!(d < eps, "actual={} expected={} diff={} eps={}", actual, expected, d, eps);
+        assert!(
+            d < eps,
+            "actual={} expected={} diff={} eps={}",
+            actual,
+            expected,
+            d,
+            eps
+        );
     }
 
     #[test]

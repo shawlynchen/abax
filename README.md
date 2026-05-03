@@ -15,6 +15,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `digamma(x)`: Digamma function <math><mi>ψ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, the logarithmic derivative of <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
   - `trigamma(x)`: Trigamma function <math><msup><mi>ψ</mi><mo>(</mo><mn>1</mn><mo>)</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
   - `tetragamma(x)`: Tetragamma function <math><msup><mi>ψ</mi><mo>(</mo><mn>2</mn><mo>)</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
+  - `gammainc(x, a, lower, scaled)`: Regularized lower/upper incomplete gamma function with explicit lower/upper tail selection; when `scaled=true`, returns tail value multiplied by <math><mi>Γ</mi><mo>(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mo>)</mo><msup><mi>e</mi><mi>x</mi></msup><msup><mi>x</mi><mrow><mo>-</mo><mi>a</mi></mrow></msup></math> for improved conditioning at large <math><mi>x</mi></math>.
   - `psi(k, x)`: Polygamma interface returning <math><msup><mi>ψ</mi><mo>(</mo><mi>k</mi><mo>)</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo></math> with stable handling of poles and infinities.
 
 ## Usage
@@ -23,7 +24,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.5"
+abax = "0.1.6"
 ```
 
 ## License
