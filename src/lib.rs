@@ -14,7 +14,7 @@ mod trigamma;
 
 pub use digamma::digamma;
 pub use gamma::gamma;
-pub use gammainc::gammainc;
+pub use gammainc::{gammainc, gammaincinv};
 pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;
@@ -38,6 +38,12 @@ mod tests {
     fn test_gammainc_export() {
         let p = gammainc(1.0, 1.0, true, false);
         assert!((p - (1.0 - (-1.0f64).exp())).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_gammaincinv_export() {
+        let x = gammaincinv(1.0 - (-1.0f64).exp(), 1.0, true);
+        assert!((x - 1.0).abs() < 1e-12);
     }
 
     #[test]

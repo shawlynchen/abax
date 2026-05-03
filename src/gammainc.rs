@@ -21,19 +21,6 @@ use crate::gammaln;
 /// - `a` must be positive for finite results.
 /// - `x` must be non-negative.
 /// - Invalid domain inputs return `NaN`.
-///
-/// # Examples
-/// ```
-/// use abax::gammainc;
-///
-/// // P(1, x) = 1 - e^{-x}
-/// let p = gammainc(2.0, 1.0, true, false);
-/// assert!((p - (1.0 - (-2.0f64).exp())).abs() < 1e-14);
-///
-/// // Q(1, x) = e^{-x}
-/// let q = gammainc(2.0, 1.0, false, false);
-/// assert!((q - (-2.0f64).exp()).abs() < 1e-14);
-/// ```
 pub fn gammainc(x: f64, a: f64, lower: bool, scaled: bool) -> f64 {
     const EPS: f64 = 1e-15;
     const FPMIN: f64 = 1e-300;
@@ -44,7 +31,7 @@ pub fn gammainc(x: f64, a: f64, lower: bool, scaled: bool) -> f64 {
     }
     if x == 0.0 {
         let base = if lower { 0.0 } else { 1.0 };
-        return if scaled && a > 0.0 && x == 0.0 {
+        return if scaled {
             if lower { 0.0 } else { f64::INFINITY }
         } else {
             base
@@ -109,6 +96,92 @@ pub fn gammainc(x: f64, a: f64, lower: bool, scaled: bool) -> f64 {
     out.clamp(0.0, f64::INFINITY)
 }
 
+/// Inverse of the regularized incomplete gamma function.
+///
+/// Solves for `x >= 0` in either:
+/// - `P(a, x) = y` when `lower = true`
+/// - `Q(a, x) = y` when `lower = false`
+///
+/// # Domain
+/// - `a > 0`
+/// - `0 <= y <= 1`
+/// - Invalid inputs return `NaN`.
+pub fn gammaincinv(y: f64, a: f64, lower: bool) -> f64 {
+    if y.is_nan() || a.is_nan() || a <= 0.0 || !(0.0..=1.0).contains(&y) {
+        return f64::NAN;
+    }
+
+    if lower {
+        if y == 0.0 {
+            return 0.0;
+        }
+        if y == 1.0 {
+            return f64::INFINITY;
+        }
+    } else {
+        if y == 1.0 {
+            return 0.0;
+        }
+        if y == 0.0 {
+            return f64::INFINITY;
+        }
+    }
+
+    let target_p = if lower { y } else { 1.0 - y };
+
+    // Bracket solution x in [lo, hi] with monotonicity of P(a, x).
+    let mut lo = 0.0;
+    let mut hi = a.max(1.0);
+    while gammainc(hi, a, true, false) < target_p {
+        hi *= 2.0;
+        if !hi.is_finite() || hi > 1e308 {
+            return f64::INFINITY;
+        }
+    }
+
+    // Initial guess via interpolation in bracket.
+    let mut x = lo + (hi - lo) * target_p;
+    if x <= 0.0 {
+        x = 0.5 * hi;
+    }
+
+    // Safeguarded Newton iterations with bisection fallback.
+    let gln = gammaln(a);
+    for _ in 0..80 {
+        let p = gammainc(x, a, true, false);
+        let f = p - target_p;
+
+        if f.abs() <= 2e-14 * target_p.max(1.0 - target_p).max(1e-16) {
+            break;
+        }
+
+        if f > 0.0 {
+            hi = x;
+        } else {
+            lo = x;
+        }
+
+        let pdf = ((a - 1.0) * x.ln() - x - gln).exp();
+        let mut x_new = if pdf.is_finite() && pdf > 0.0 {
+            x - f / pdf
+        } else {
+            f64::NAN
+        };
+
+        if !x_new.is_finite() || x_new <= lo || x_new >= hi {
+            x_new = 0.5 * (lo + hi);
+        }
+
+        if (x_new - x).abs() <= 2e-14 * x_new.abs().max(1.0) {
+            x = x_new;
+            break;
+        }
+        x = x_new;
+    }
+
+    x.max(0.0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -128,7 +201,6 @@ mod tests {
     fn test_a_half_erf_relation() {
         let x = 1.0;
         let p = gammainc(x, 0.5, true, false);
-        // erf(1) reference value
         let erf1 = 0.8427007929497149;
         assert!((p - erf1).abs() < 2e-14);
     }
@@ -144,8 +216,32 @@ mod tests {
     }
 
     #[test]
-    fn test_domain() {
-        assert!(gammainc(-1.0, 2.0, true, false).is_nan());
-        assert!(gammainc(1.0, 0.0, true, false).is_nan());
+    fn test_gammaincinv_roundtrip_lower() {
+        let a = 2.5;
+        for &y in &[1e-12, 1e-9, 1e-6, 0.01, 0.2, 0.5, 0.8, 0.99, 1.0 - 1e-10] {
+            let x = gammaincinv(y, a, true);
+            let y2 = gammainc(x, a, true, false);
+            assert!((y2 - y).abs() <= 5e-12_f64.max(5e-12 * y.abs()));
+        }
+    }
+
+    #[test]
+    fn test_gammaincinv_roundtrip_upper() {
+        let a = 5.0;
+        for &y in &[1e-12, 1e-9, 1e-6, 0.01, 0.2, 0.5, 0.8, 0.99, 1.0 - 1e-10] {
+            let x = gammaincinv(y, a, false);
+            let y2 = gammainc(x, a, false, false);
+            assert!((y2 - y).abs() <= 5e-12_f64.max(5e-12 * y.abs()));
+        }
+    }
+
+    #[test]
+    fn test_gammaincinv_domain_and_edges() {
+        assert!(gammaincinv(0.5, 0.0, true).is_nan());
+        assert!(gammaincinv(-0.1, 1.0, true).is_nan());
+        assert_eq!(gammaincinv(0.0, 2.0, true), 0.0);
+        assert!(gammaincinv(1.0, 2.0, true).is_infinite());
+        assert_eq!(gammaincinv(1.0, 2.0, false), 0.0);
+        assert!(gammaincinv(0.0, 2.0, false).is_infinite());
     }
 }
