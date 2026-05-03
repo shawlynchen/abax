@@ -6,17 +6,19 @@
 mod consts;
 mod digamma;
 mod gamma;
+mod gammainc;
 mod gammaln;
-mod trigamma;
-mod tetragamma;
 mod psi;
+mod tetragamma;
+mod trigamma;
 
 pub use digamma::digamma;
 pub use gamma::gamma;
+pub use gammainc::gammainc;
 pub use gammaln::gammaln;
-pub use trigamma::trigamma;
-pub use tetragamma::tetragamma;
 pub use psi::psi;
+pub use tetragamma::tetragamma;
+pub use trigamma::trigamma;
 
 #[cfg(test)]
 mod tests {
@@ -30,6 +32,12 @@ mod tests {
     #[test]
     fn test_gamma_export() {
         assert_eq!(gamma(5.0), 24.0);
+    }
+
+    #[test]
+    fn test_gammainc_export() {
+        let p = gammainc(1.0, 1.0, true, false);
+        assert!((p - (1.0 - (-1.0f64).exp())).abs() < 1e-14);
     }
 
     #[test]
@@ -47,4 +55,3 @@ mod tests {
         assert!((tetragamma(1.0) + 2.4041138063191885).abs() < 1e-13);
     }
 }
-

@@ -76,7 +76,14 @@ mod tests {
 
     fn assert_approx_eq(actual: f64, expected: f64, eps: f64) {
         let d = (actual - expected).abs();
-        assert!(d < eps, "actual={} expected={} diff={} eps={}", actual, expected, d, eps);
+        assert!(
+            d < eps,
+            "actual={} expected={} diff={} eps={}",
+            actual,
+            expected,
+            d,
+            eps
+        );
     }
 
     #[test]

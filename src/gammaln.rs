@@ -3,14 +3,14 @@ use crate::consts::*;
 /// Computes the natural logarithm of the Gamma function, <math><mi>ln</mi><mo>(</mo><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></math>.
 ///
 /// This implementation provides high precision across the positive real axis:
-/// - **Small values (<math><mi>x</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup></math>)**: Utilizes a Taylor series expansion involving the Euler-Mascheroni 
+/// - **Small values (<math><mi>x</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup></math>)**: Utilizes a Taylor series expansion involving the Euler-Mascheroni
 ///   constant and Riemann Zeta values.
 /// - **Large values**: Employs Stirling's asymptotic expansion using high-precision coefficients.
-/// - **Intermediate values (<math><mi>x</mi><mo>&lt;</mo><mn>10</mn></math>)**: Uses the recurrence relation <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>x</mi><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> 
+/// - **Intermediate values (<math><mi>x</mi><mo>&lt;</mo><mn>10</mn></math>)**: Uses the recurrence relation <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>x</mi><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>
 ///   to shift the argument into the optimal range for the Stirling approximation.
 ///
 /// # Mathematical Context
-/// The Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> extends the factorial function to real numbers: <math><mi>Γ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>n</mi><mo>-</mo><mn>1</mn><mo>)</mo><mo>!</mo></math> 
+/// The Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> extends the factorial function to real numbers: <math><mi>Γ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>n</mi><mo>-</mo><mn>1</mn><mo>)</mo><mo>!</mo></math>
 /// for positive integers <math><mi>n</mi></math>.
 ///
 /// # Edge Cases
