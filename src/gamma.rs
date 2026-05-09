@@ -1,3 +1,5 @@
+use crate::consts::SQRT_2PI;
+
 /// Calculates the Gamma function Γ(x) using the Lanczos approximation.
 ///
 /// This implementation utilizes the Lanczos approximation
@@ -78,56 +80,27 @@
 /// ```
 pub fn gamma(x: f64) -> f64 {
     // 1. Handle Special Cases & Poles
-    if x.is_nan() {
-        return f64::NAN;
-    }
+    if x.is_nan() { return f64::NAN; }
     if x.is_infinite() {
-        return if x.is_sign_positive() {
-            f64::INFINITY
-        } else {
-            f64::NAN
-        };
+        return if x.is_sign_positive() { f64::INFINITY } else { f64::NAN };
     }
 
     // Poles at non-positive integers
     if x <= 0.0 && x == x.floor() {
-        return f64::INFINITY;
+        // Return NAN for negative integers; Signed Infinity for 0.0 is optional but common
+        return if x == 0.0 { x.recip() } else { f64::NAN };
     }
 
-    // 2. Exact Integers (Gamma(n) = (n-1)!)
-    if x > 0.0 && x == x.floor() && x <= 23.0 {
-        let factorial: [f64; 23] = [
-            1.0,
-            1.0,
-            2.0,
-            6.0,
-            24.0,
-            120.0,
-            720.0,
-            5040.0,
-            40320.0,
-            362880.0,
-            3628800.0,
-            39916800.0,
-            479001600.0,
-            6227020800.0,
-            87178291200.0,
-            1307674368000.0,
-            20922789888000.0,
-            355687428096000.0,
-            6402373705728000.0,
-            121645100408832000.0,
-            2432902008176640000.0,
-            51090942171709440000.0,
-            1124000727777607680000.0,
-        ];
-        return factorial[(x - 1.0) as usize];
-    }
-
-    // 3. Reflection Formula for x < 0.5
+    // 2. Reflection Formula for x < 0.5
     if x < 0.5 {
         return std::f64::consts::PI / ((std::f64::consts::PI * x).sin() * gamma(1.0 - x));
     }
+
+    // 3. Exact Integers (Gamma(n) = (n-1)!)
+    if x == x.floor() && x <= 23.0 {
+        return (1..x as u64).map(|i| i as f64).product();
+    }
+
 
     // 4. Lanczos Approximation (g=7, n=9)
     const G: f64 = 7.0;
@@ -145,16 +118,133 @@ pub fn gamma(x: f64) -> f64 {
 
     let z = x - 1.0;
     let mut a = P[0];
-    for i in 1..9 {
-        a += P[i] / (z + i as f64);
+    for (i, &p_val) in P.iter().skip(1).enumerate() {
+        a += p_val / (z + (i + 1) as f64);
     }
 
     let t = z + G + 0.5;
 
-    // Using SQRT(2*PI) constant directly for a tiny speed boost
-    const SQRT_2PI: f64 = 2.5066282746310005;
-
     SQRT_2PI * t.powf(z + 0.5) * (-t).exp() * a
+}
+
+/// Evaluates the Gamma function Γ(x) using the approximation from 
+/// W. J. Cody (Argonne National Laboratory, 1989).
+#[allow(dead_code)]
+fn gamma_cody(x: f64) -> f64 {
+    let mut x = x;    
+    // 1. Handle special cases
+    if x.is_nan() {
+        return f64::NAN;
+    }
+    if x.is_infinite() {
+        return if x.is_sign_positive() { f64::INFINITY } else { f64::NAN };
+    }
+
+    // Poles at non-positive integers
+    if x <= 0.0 && x == x.trunc() {
+        return if x == 0.0 { f64::INFINITY * x.signum() } else { f64::NAN };
+    }
+
+    // Coefficients for 1 <= x <= 2
+    const P: [f64; 8] = [
+        -1.71618513886549492533811e+0, 2.47656508055759199108314e+1,
+        -3.79804256470945635097577e+2, 6.29331155312818442661052e+2,
+        8.66966202790413211295064e+2, -3.14512729688483675254357e+4,
+        -3.61444134186911729807069e+4, 6.64561438202405440627855e+4,
+    ];
+    const Q: [f64; 8] = [
+        -3.08402300119738975254353e+1, 3.15350626979604161529144e+2,
+        -1.01515636749021914166146e+3, -3.10777167157231109440444e+3,
+        2.25381184209801510330112e+4, 4.75584627752788110767815e+3,
+        -1.34659959864969306392456e+5, -1.15132259675553483497211e+5,
+    ];
+    
+    // Coefficients for asymptotic series x >= 12
+    const C: [f64; 7] = [
+        -1.910444077728e-03, 8.4171387781295e-04,
+        -5.952379913043012e-04, 7.93650793500350248e-04,
+        -2.777777777777681622553e-03, 8.333333333333333331554247e-02,
+        5.7083835261e-03,
+    ];
+    let spi = 0.9189385332046727417803297; // 0.5 * ln(2 * pi)
+
+    let mut fact = 1.0;
+    let mut is_negative = false;
+
+    // 2. Catch negative x and map to positive using reflection formula
+    if x < 0.0 {
+        is_negative = true;
+        let y = -x;
+        let y1 = y.trunc();
+        let res_frac = y - y1;
+        
+        // Reflection formula factor: -pi / (sin(pi * res) * (1 - 2*rem(y1, 2)))
+        let rem_y1_2 = y1 % 2.0;
+        fact = -std::f64::consts::PI / ((std::f64::consts::PI * res_frac).sin() * (1.0 - 2.0 * rem_y1_2));
+        
+        // Map x to positive range calculation
+        x = y + 1.0; 
+    }
+
+    let mut res;
+
+    // 3. Evaluate based on region
+    if x >= 12.0 {
+        // Asymptotic approximation for x >= 12
+        let y = x;
+        let ysq = y * y;
+        let mut sum = C[6];
+        for i in 0..6 {
+            sum = sum / ysq + C[i];
+        }
+        sum = sum / y - y + spi;
+        sum += (y - 0.5) * y.ln();
+        res = sum.exp();
+    } else {
+        // Argument reduction for x < 12
+        let mut x1 = 1.0;
+        let mut was_less_than_one = false;
+        
+        // Map x in [0, 1] to [1, 2]
+        if x < 1.0 {
+            x1 = x;
+            x += 1.0;
+            was_less_than_one = true;
+        }
+
+        // Map x in [1, 12] to [1, 2]
+        let xn = x.trunc() - 1.0;
+        x -= xn;
+
+        // Evaluate rational approximation for 1 <= x <= 2
+        let z = x - 1.0;
+        let mut xnum = 0.0;
+        let mut xden = 1.0;
+        for i in 0..8 {
+            xnum = (xnum + P[i]) * z;
+            xden = xden * z + Q[i];
+        }
+        res = xnum / xden + 1.0;
+
+        // Adjust result for case 0.0 < original x < 1.0
+        if was_less_than_one {
+            res /= x1;
+        }
+
+        // Adjust result for case 2.0 < original x < 12.0
+        // Re-apply the integer offsets we subtracted earlier
+        for _ in 0..(xn as i32) {
+            res *= x;
+            x += 1.0;
+        }
+    }
+
+    // 4. Final adjustments for original negative values
+    if is_negative {
+        res = fact / res;
+    }
+
+    res
 }
 
 #[cfg(test)]
@@ -208,7 +298,7 @@ mod tests {
     fn test_special_cases() {
         // Poles (Returns Infinity or NaN based on your implementation)
         assert!(gamma(0.0).is_infinite());
-        assert!(gamma(-1.0).is_infinite());
+        assert!(gamma(-1.0).is_nan());
 
         // Limits
         assert!(gamma(f64::NAN).is_nan());

@@ -56,7 +56,7 @@ pub fn tetragamma(x: f64) -> f64 {
     let mut series = -inv2 - inv2 * inv;
     let mut p = inv2 * inv2; // 1/x^4
 
-    for (k, &b2n) in BERNOULLI_EVEN.iter().enumerate() {
+    for (k, &b2n) in BERNOULLI_EVEN.iter().skip(1).enumerate() {
         let n = (k + 1) as f64;
         let coeff = 2.0 * n + 1.0;
         let term = -coeff * b2n * p;
@@ -73,6 +73,7 @@ pub fn tetragamma(x: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
 
     fn assert_approx_eq(actual: f64, expected: f64, eps: f64) {
         let d = (actual - expected).abs();

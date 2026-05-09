@@ -29,7 +29,7 @@ pub fn gammaln(x: f64) -> f64 {
         _ if x.is_infinite() => f64::INFINITY,
         _ if x < 0.00001 => {
             // Taylor
-            -f64::ln(x) + x * (-EULER_MASCHERONI + x * RIEMANN_ZETA_2 / 2.0)
+            -f64::ln(x) + x * (-EULER_MASCHERONI + x * RIEMANN_ZETA[2] / 2.0)
         }
         1.0 | 2.0 => 0.0,
         _ => {

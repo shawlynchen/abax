@@ -7,6 +7,7 @@ mod consts;
 mod digamma;
 mod gamma;
 mod gammainc;
+mod gammaincinv;
 mod gammaln;
 mod psi;
 mod tetragamma;
@@ -14,7 +15,8 @@ mod trigamma;
 
 pub use digamma::digamma;
 pub use gamma::gamma;
-pub use gammainc::{gammainc, gammaincinv};
+pub use gammainc::gammainc;
+pub use gammaincinv::gammaincinv;
 pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;

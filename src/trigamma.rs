@@ -47,7 +47,7 @@ pub fn trigamma(x: f64) -> f64 {
     let mut xx = x;
     let mut acc = 0.0;
 
-    while xx < 8.0 {
+    while xx < 10.0 {
         acc += 1.0 / (xx * xx);
         xx += 1.0;
     }
@@ -59,7 +59,7 @@ pub fn trigamma(x: f64) -> f64 {
     let mut series = inv + 0.5 * inv2;
     let mut p = inv * inv2; // 1/x^3
 
-    for &b2n in BERNOULLI_EVEN.iter() {
+    for &b2n in BERNOULLI_EVEN.iter().skip(1) {
         let term = b2n * p;
         series += term;
         p *= inv2;

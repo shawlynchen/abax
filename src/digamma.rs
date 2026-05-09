@@ -47,22 +47,23 @@ pub fn digamma(x: f64) -> f64 {
     let mut xx = x;
     let mut acc = 0.0;
 
-    while xx < 8.0 {
+    while xx < 10.0 {
         acc -= 1.0 / xx;
         xx += 1.0;
     }
 
-    let inv = 1.0 / xx;
-    let inv2 = inv * inv;
+    let inv = 1.0 / xx;                                                         // xx >= 10.0 so that inv <= 0.1
+    let inv2 = inv * inv;                                                       // inv2 <= 0.01
 
     let mut series = xx.ln() - 0.5 * inv;
     let mut p = inv2;
 
-    for (k, &b2k) in BERNOULLI_EVEN.iter().enumerate() {
+    for (k, &b2k) in BERNOULLI_EVEN.iter().skip(1).enumerate() {
         let denom = 2.0 * (k as f64 + 1.0);
-        series -= b2k * p / denom;
+        let delta = b2k * p / denom;
+        series -= delta;
         p *= inv2;
-        if (b2k * p / denom).abs() < 1e-18 {
+        if delta.abs() < 1e-18 {
             break;
         }
     }

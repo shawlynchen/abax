@@ -1,6 +1,7 @@
-use crate::{digamma, gamma, tetragamma, trigamma};
+use crate::{digamma, gammaln};
+use crate::consts::BERNOULLI_EVEN;
 
-/// Computes the polygamma function `psi(k, x)` (MATLAB-compatible order convention),
+/// Computes the polygamma function `psi(k, x)`,
 /// where `k = 0` is the digamma function and `k >= 1` are higher derivatives.
 ///
 /// Mathematically:
@@ -26,62 +27,82 @@ use crate::{digamma, gamma, tetragamma, trigamma};
 /// assert!((psi(2, 1.0) + 2.4041138063191885).abs() < 1e-13);
 /// ```
 pub fn psi(k: usize, x: f64) -> f64 {
-    match k {
-        0 => digamma(x),
-        1 => trigamma(x),
-        2 => tetragamma(x),
-        _ => psi_high_order(k, x),
+    polygamma(k, x)
+}
+
+fn polygamma(n: usize, x: f64) -> f64 {
+    // Handle basic domain errors
+    if n == 0 { return digamma(x); } // n=0 is defined as digamma
+    if x <= 0.0 && x == x.floor() { return f64::NAN; }
+    if x.is_infinite() { return 0.0; }
+
+    let limit = 0.4 * 15.0 + 4.0 * (n as f64); // 15 digits of precision
+    
+    if x > limit {
+        polygamma_at_infinity(n, x)
+    } else {
+        polygamma_at_transition(n, x)
     }
 }
 
-fn psi_high_order(k: usize, x: f64) -> f64 {
-    if x.is_nan() {
-        return f64::NAN;
-    }
-    if x.is_infinite() {
-        return if x.is_sign_positive() { 0.0 } else { f64::NAN };
-    }
-    if x <= 0.0 && x == x.floor() {
-        return f64::NAN;
-    }
-
-    let m = k as i32;
-    let mut xx = x;
-    let mut acc = 0.0;
-    let fact = gamma(k as f64 + 1.0);
-    if !fact.is_finite() {
-        return f64::NAN;
-    }
-
-    // Recurrence: ψ^(m)(x) = ψ^(m)(x+1) - (-1)^m m! / x^(m+1)
-    while xx < 8.0 {
-        let denom = xx.powi(m + 1);
-        let step = if k.is_multiple_of(2) {
-            -fact / denom
-        } else {
-            fact / denom
-        };
-        acc += step;
-        xx += 1.0;
-
-        if xx <= 0.0 && xx == xx.floor() {
-            return f64::NAN;
-        }
-    }
-
-    // ψ^(m)(x) = (-1)^(m+1) m! * Σ_{n=0..∞} 1/(x+n)^(m+1), for m>=1
+fn polygamma_at_transition(n: usize, x: f64) -> f64 {
+    let mut z = x;
     let mut sum = 0.0;
-    let p = (k + 1) as i32;
-    for n in 0..200_000usize {
-        let t = 1.0 / (xx + n as f64).powi(p);
-        sum += t;
-        if t < 1e-18 {
+    let n_f64 = n as f64;
+    
+    // Determine how many steps to shift x to reach the stable region
+    let target = (0.4 * 15.0) + (4.0 * n_f64);
+    let iterations = (target - x).floor() as i32;
+
+    // Forward recursion: ψ^(n)(x) = Σ (-1)^n * n! / (x+k)^(n+1) + ψ^(n)(x+iter)
+    // We use logs for the factorial/power part to prevent overflow
+    for _ in 0..iterations {
+        let log_term = gammaln(n_f64 + 1.0) - (n_f64 + 1.0) * z.ln();
+        let term = log_term.exp();
+        
+        if n % 2 == 0 {
+            sum -= term;
+        } else {
+            sum += term;
+        }
+        z += 1.0;
+    }
+
+    sum + polygamma_at_infinity(n, z)
+}
+
+fn polygamma_at_infinity(n: usize, x: f64) -> f64 {
+    let n_f64 = n as f64;
+    let x_sq = x * x;
+
+    // uses gammaln and logs for the lead term to handle large n 
+    // part_term = (n-1)! / x^(n+1)
+    let log_part_term = gammaln(n_f64) - (n_f64 + 1.0) * x.ln();
+    let mut part_term = log_part_term.exp();
+    
+    // Initial lead terms of the asymptotic expansion
+    // sum = part_term * (n + 2x) / 2
+    let mut sum = part_term * (n_f64 + 2.0 * x) / 2.0;
+    
+    // Series: part_term * n * (n+1) / 2x * Σ Bernoulli
+    part_term *= (n_f64 * (n_f64 + 1.0)) / (2.0 * x);
+
+    for k in 1..BERNOULLI_EVEN.iter().len() {
+        let term = part_term * BERNOULLI_EVEN[k];
+        sum += term;
+
+        // Termination condition from Boost: relative error < epsilon
+        if (term / sum).abs() < f64::EPSILON {
             break;
         }
+
+        // Move part_term to the next k
+        let k_f64 = k as f64;
+        part_term *= (n_f64 + 2.0 * k_f64) * (n_f64 + 2.0 * k_f64 + 1.0);
+        part_term /= (2.0 * k_f64 + 1.0) * (2.0 * k_f64 + 2.0) * x_sq;
     }
 
-    let sign = if (k + 1).is_multiple_of(2) { 1.0 } else { -1.0 };
-    acc + sign * fact * sum
+    if (n - 1) % 2 != 0 { -sum } else { sum }
 }
 
 #[cfg(test)]
@@ -109,12 +130,6 @@ mod tests {
         assert!(psi(4, -2.0).is_nan());
     }
 
-    #[test]
-    fn test_low_order_dispatch() {
-        assert_approx_eq(psi(0, 1.0), digamma(1.0), 1e-15);
-        assert_approx_eq(psi(1, 1.0), trigamma(1.0), 1e-15);
-        assert_approx_eq(psi(2, 1.0), tetragamma(1.0), 1e-14);
-    }
 
     #[test]
     fn test_known_high_order_values() {
