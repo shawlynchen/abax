@@ -91,7 +91,7 @@ fn polygamma_at_infinity(n: usize, x: f64) -> f64 {
         let term = part_term * BERNOULLI_EVEN[k];
         sum += term;
 
-        // Termination condition from Boost: relative error < epsilon
+        // Termination condition: relative error < epsilon
         if (term / sum).abs() < f64::EPSILON {
             break;
         }
