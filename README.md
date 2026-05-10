@@ -12,6 +12,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
 - **Special Functions**:
   - `erf(x)`: Error function <math><mrow><mi>erf</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mn>2</mn><msqrt><mi>π</mi></msqrt></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><msup><mi>e</mi><mrow><mo>-</mo><msup><mi>t</mi><mn>2</mn></msup></mrow></msup><mi>d</mi><mi>t</mi></mrow></math>, implemented with piecewise 53-bit rational approximations for accurate `f64` results.
   - `erfc(x)`: Complementary error function <math><mrow><mi>erfc</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo>-</mo><mi>erf</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mn>2</mn><msqrt><mi>π</mi></msqrt></mfrac><msubsup><mo>∫</mo><mi>x</mi><mi>∞</mi></msubsup><msup><mi>e</mi><mrow><mo>-</mo><msup><mi>t</mi><mn>2</mn></msup></mrow></msup><mi>d</mi><mi>t</mi></mrow></math>, evaluated directly in tail regions to avoid cancellation.
+  - `erfcx(x)`: Scaled complementary error function <math><mrow><mi>erfcx</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msup><mi>e</mi><msup><mi>x</mi><mn>2</mn></msup></msup><mi>erfc</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>, implemented with Laplace's continued fraction and reflection formula for numerical stability across all <math><mi>x</mi></math>.
   - `erfinv(x)`: Inverse error function implemented with piecewise rational approximations for `f64` inputs in `[-1, 1]`.
   - `erfcinv(x)`: Inverse complementary error function implemented with piecewise rational approximations for `f64` inputs in `[0, 2]`.
   - `gamma(x)`: Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> computed with the Lanczos approximation and reflection formula.
@@ -29,7 +30,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.12"
+abax = "0.1.13"
 ```
 
 ## License
