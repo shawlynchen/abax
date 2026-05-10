@@ -8,7 +8,7 @@ fn evaluate_polynomial(coeffs: &[f64], x: f64) -> f64 {
 }
 
 #[inline]
-fn erfinv_imp(p: f64, q: f64) -> f64 {
+pub(crate) fn erfinv_imp(p: f64, q: f64) -> f64 {
     // Piecewise rational approximations for 64-bit and smaller floating-point types.
     if p <= 0.5 {
         // Evaluate inverse erf using: x = p(p + 10)(Y + R(p)).
