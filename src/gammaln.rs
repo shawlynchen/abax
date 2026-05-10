@@ -38,8 +38,8 @@ pub fn gammaln(x: f64) -> f64 {
             let mut correction = 1.0;
             // gamma(z + 1) = z * gamma(z)
             while current_x < 10.0 {
-                correction = correction / current_x;
-                current_x = current_x + 1.0;
+                correction /= current_x;
+                current_x += 1.0;
             }
 
             let inv_x_sq = 1.0 / (current_x * current_x);
@@ -106,7 +106,7 @@ mod tests {
         // ln(Gamma(2)) = ln(1) = 0
         assert_eq!(gammaln(2.0), 0.0);
         // ln(Gamma(3)) = ln(2)
-        assert_approx_eq(gammaln(3.0), 0.6931471805599453, 1e-14);
+        assert_approx_eq(gammaln(3.0), std::f64::consts::LN_2, 1e-14);
         // ln(Gamma(10)) = ln(9!) = ln(362880)
         assert_approx_eq(gammaln(10.0), 12.801827480081469, 1e-14);
     }

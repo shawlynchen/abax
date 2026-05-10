@@ -60,7 +60,7 @@ fn polygamma_at_transition(n: usize, x: f64) -> f64 {
         let log_term = gammaln(n_f64 + 1.0) - (n_f64 + 1.0) * z.ln();
         let term = log_term.exp();
         
-        if n % 2 == 0 {
+        if n.is_multiple_of(2) {
             sum -= term;
         } else {
             sum += term;
@@ -87,8 +87,8 @@ fn polygamma_at_infinity(n: usize, x: f64) -> f64 {
     // Series: part_term * n * (n+1) / 2x * Σ Bernoulli
     part_term *= (n_f64 * (n_f64 + 1.0)) / (2.0 * x);
 
-    for k in 1..BERNOULLI_EVEN.iter().len() {
-        let term = part_term * BERNOULLI_EVEN[k];
+    for (k, &bernoulli) in BERNOULLI_EVEN.iter().enumerate().skip(1) {
+        let term = part_term * bernoulli;
         sum += term;
 
         // Termination condition: relative error < epsilon
@@ -102,7 +102,7 @@ fn polygamma_at_infinity(n: usize, x: f64) -> f64 {
         part_term /= (2.0 * k_f64 + 1.0) * (2.0 * k_f64 + 2.0) * x_sq;
     }
 
-    if (n - 1) % 2 != 0 { -sum } else { sum }
+    if !(n - 1).is_multiple_of(2) { -sum } else { sum }
 }
 
 #[cfg(test)]

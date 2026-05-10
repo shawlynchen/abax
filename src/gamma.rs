@@ -194,8 +194,8 @@ fn gamma_cody(x: f64) -> f64 {
         let y = x;
         let ysq = y * y;
         let mut sum = C[6];
-        for i in 0..6 {
-            sum = sum / ysq + C[i];
+        for &coefficient in C.iter().take(6) {
+            sum = sum / ysq + coefficient;
         }
         sum = sum / y - y + spi;
         sum += (y - 0.5) * y.ln();
@@ -280,7 +280,7 @@ mod tests {
     #[test]
     fn test_recurrence_relation() {
         // Gamma(x + 1) = x * Gamma(x)
-        let x = 3.14159;
+        let x = std::f64::consts::PI;
         let lhs = gamma(x + 1.0);
         let rhs = x * gamma(x);
         assert!((lhs - rhs).abs() / lhs < EPSILON);

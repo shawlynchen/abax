@@ -21,8 +21,9 @@ use crate::gammaln;
 /// - `a` must be positive for finite results.
 /// - `x` must be non-negative.
 /// - Invalid domain inputs return `NaN`.
+///
 /// Computes the Incomplete Gamma Function with 1-ULP precision.
-/// Matches MATLAB behavior for regularized, scaledlower, and scaledupper.
+/// Supports regularized and scaled lower/upper-tail evaluations.
 pub fn gammainc(x: f64, a: f64, lower: bool, scaled: bool) -> f64 {
     const EPS: f64 = f64::EPSILON;
     const FPMIN: f64 = 1e-300;
@@ -53,7 +54,7 @@ pub fn gammainc(x: f64, a: f64, lower: bool, scaled: bool) -> f64 {
             if !lower { q } else { (1.0 - q).max(0.0) }
         }
     } else {
-        // --- MATLAB Scaled Mode ---
+        // --- Scaled Mode ---
         // Both scaledlower and scaledupper use: Gamma(a+1)*exp(x)/x^a
         // This factor cancels the regularized prefix terms, leaving only 'a'.
         if lower {
