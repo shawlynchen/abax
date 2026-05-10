@@ -10,6 +10,8 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - Euler-Mascheroni constant.
   - Stirling series coefficients for asymptotic expansions.
 - **Special Functions**:
+  - `erf(x)`: Error function implemented with piecewise 53-bit rational approximations for accurate `f64` results.
+  - `erfc(x)`: Complementary error function evaluated directly in tail regions to avoid cancellation.
   - `gamma(x)`: Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> computed with the Lanczos approximation and reflection formula.
   - `gammaln(x)`: Natural logarithm of the Gamma function <math><mi>ln</mi><mo>(</mo><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></math> using Stirling's approximation for high precision.
   - `digamma(x)`: Digamma function <math><mi>ψ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, the logarithmic derivative of <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
@@ -25,7 +27,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.8"
+abax = "0.1.10"
 ```
 
 ## License

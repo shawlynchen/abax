@@ -5,6 +5,8 @@
 
 mod consts;
 mod digamma;
+mod erf;
+mod erfc;
 mod gamma;
 mod gammainc;
 mod gammaincinv;
@@ -14,6 +16,8 @@ mod tetragamma;
 mod trigamma;
 
 pub use digamma::digamma;
+pub use erf::erf;
+pub use erfc::erfc;
 pub use gamma::gamma;
 pub use gammainc::gammainc;
 pub use gammaincinv::gammaincinv;
@@ -29,6 +33,16 @@ mod tests {
     #[test]
     fn test_gammaln_export() {
         assert_eq!(gammaln(1.0), 0.0);
+    }
+
+    #[test]
+    fn test_erf_export() {
+        assert!((erf(1.0) - 0.8427007929497149).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_erfc_export() {
+        assert!((erfc(1.0) - 0.15729920705028513).abs() < 1e-15);
     }
 
     #[test]
