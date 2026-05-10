@@ -30,7 +30,7 @@ fn exp_neg_z2_over_z(z: f64) -> f64 {
 }
 
 #[inline]
-fn erf_imp(mut z: f64, mut invert: bool) -> f64 {
+pub(crate) fn erf_imp(mut z: f64, mut invert: bool) -> f64 {
     if z.is_nan() {
         return f64::NAN;
     }
