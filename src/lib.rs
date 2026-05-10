@@ -1,3 +1,6 @@
+#![allow(clippy::excessive_precision)]
+#![allow(clippy::doc_overindented_list_items)]
+
 //! # abax
 //!
 //! A lightweight Rust library providing high-precision mathematical constants and special functions.
@@ -7,6 +10,7 @@ mod consts;
 mod digamma;
 mod erf;
 mod erfc;
+mod erfinv;
 mod gamma;
 mod gammainc;
 mod gammaincinv;
@@ -18,6 +22,7 @@ mod trigamma;
 pub use digamma::digamma;
 pub use erf::erf;
 pub use erfc::erfc;
+pub use erfinv::erfinv;
 pub use gamma::gamma;
 pub use gammainc::gammainc;
 pub use gammaincinv::gammaincinv;
@@ -43,6 +48,11 @@ mod tests {
     #[test]
     fn test_erfc_export() {
         assert!((erfc(1.0) - 0.15729920705028513).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_erfinv_export() {
+        assert!((erfinv(0.5) - 0.4769362762044699).abs() < 1e-15);
     }
 
     #[test]
