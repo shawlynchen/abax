@@ -16,6 +16,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `erfinv(x)`: Inverse error function implemented with piecewise rational approximations for `f64` inputs in `[-1, 1]`.
   - `erfcinv(x)`: Inverse complementary error function implemented with piecewise rational approximations for `f64` inputs in `[0, 2]`.
   - `gamma(x)`: Gamma function <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math> computed with the Lanczos approximation and reflection formula.
+  - `beta(z, w)`: Beta function <math><mrow><mi>B</mi><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>)</mo><mi>Γ</mi><mo>(</mo><mi>w</mi><mo>)</mo></mrow><mrow><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>+</mo><mi>w</mi><mo>)</mo></mrow></mfrac></mrow></math>, implemented using the logarithmic Gamma function for numerical stability.
   - `gammaln(x)`: Natural logarithm of the Gamma function <math><mi>ln</mi><mo>(</mo><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></math> using Stirling's approximation for high precision.
   - `digamma(x)`: Digamma function <math><mi>ψ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, the logarithmic derivative of <math><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
   - `trigamma(x)`: Trigamma function <math><msup><mi>ψ</mi><mo>(</mo><mn>1</mn><mo>)</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo></math>, implemented with reflection, recurrence shifting, and asymptotic expansion for numerical stability.
@@ -30,7 +31,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.13"
+abax = "0.1.14"
 ```
 
 ## License

@@ -19,7 +19,9 @@ mod gammaln;
 mod psi;
 mod tetragamma;
 mod trigamma;
+mod beta;
 
+pub use beta::beta;
 pub use digamma::digamma;
 pub use erf::erf;
 pub use erfc::erfc;
