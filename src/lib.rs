@@ -23,6 +23,7 @@ mod beta;
 mod betaln;
 mod betainc;
 mod betaincinv;
+mod norminv;
 
 pub use beta::beta;
 pub use betaln::betaln;
@@ -40,6 +41,8 @@ pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;
 pub use trigamma::trigamma;
+pub use norminv::norminv;
+
 
 #[cfg(test)]
 mod tests {

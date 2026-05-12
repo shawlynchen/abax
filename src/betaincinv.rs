@@ -2,9 +2,9 @@ use crate::{betainc, betaln, beta};
 
 /// Inverse of the regularized incomplete beta function.
 ///
-/// Solves for `x` such that:
-/// - `betainc(x, z, w, true) = y` when `lower = true`
-/// - `betainc(x, z, w, false) = y` when `lower = false`
+/// Solves for <math><mi>x</mi></math> such that:
+/// - <math><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo><mo>=</mo><mi>y</mi></math> when `lower = true`
+/// - <math><mn>1</mn><mo>-</mo><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo><mo>=</mo><mi>y</mi></math> when `lower = false`
 ///
 /// # Domain
 /// - `z > 0`, `w > 0`

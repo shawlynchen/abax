@@ -1,10 +1,10 @@
 use crate::betaln;
 
-/// Regularized incomplete beta function I_x(a, b).
+/// Regularized incomplete beta function <math><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math>.
 ///
 /// Solves for:
-/// - `I_x(z, w)` when `lower = true` (regularized lower incomplete beta)
-/// - `1 - I_x(z, w)` when `lower = false` (regularized upper incomplete beta)
+/// - <math><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math> when `lower = true` (regularized lower incomplete beta)
+/// - <math><mn>1</mn><mo>-</mo><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math> when `lower = false` (regularized upper incomplete beta)
 ///
 /// # Domain
 /// - `0 <= x <= 1`
