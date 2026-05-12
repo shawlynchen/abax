@@ -8,11 +8,11 @@ use std::f64::consts::SQRT_2;
 /// normal random variable being less than or equal to `x` is `p`.
 ///
 /// # Mathematical Definition
-/// For a standard normal distribution (<math><mi>μ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>σ</mi><mo>=</mo><mn>1</mn></math>):
-/// <math><mi>z</mi><mo>=</mo><msup><mi>Φ</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>(</mo><mi>p</mi><mo>)</mo><mo>=</mo><mo>-</mo><msqrt><mn>2</mn></msqrt><msup><mi>erfc</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>(</mo><mn>2</mn><mi>p</mi><mo>)</mo></math>
+/// The quantile function is expressed via the inverse error function. For <math><mi>p</mi><mo>∈</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>:
+/// <math display="block"><mi>x</mi><mo>=</mo><mi>μ</mi><mo>+</mo><mi>σ</mi><msqrt><mn>2</mn></msqrt><msup><mi>erf</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>(</mo><mn>2</mn><mi>p</mi><mo>-</mo><mn>1</mn><mo>)</mo></math>
 ///
-/// For a general normal distribution:
-/// <math><mi>x</mi><mo>=</mo><mi>μ</mi><mo>+</mo><mi>σ</mi><mo>·</mo><mi>z</mi></math>
+/// For a standard normal distribution (<math><mi>μ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>σ</mi><mo>=</mo><mn>1</mn></math>), this is the Probit function:
+/// <math display="block"><mi>z</mi><mo>=</mo><msup><mi>Φ</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>(</mo><mi>p</mi><mo>)</mo><mo>=</mo><mo>-</mo><msqrt><mn>2</mn></msqrt><msup><mi>erfc</mi><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>(</mo><mn>2</mn><mi>p</mi><mo>)</mo></math>
 ///
 /// # Domain
 /// - `0 <= p <= 1`

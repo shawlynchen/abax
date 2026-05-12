@@ -179,10 +179,10 @@ pub(crate) fn erf_imp(mut z: f64, mut invert: bool) -> f64 {
     prefix_adder + prefix_multiplier * result
 }
 
-/// Calculates the error function `erf(x)`.
+/// Calculates the error function <math><mi>erf</mi><mo>(</mo><mi>x</mi><mo>)</mo></math>.
 ///
-/// The error function is defined by
-/// `erf(x) = 2/sqrt(pi) * integral from 0 to x of exp(-t^2) dt`.
+/// The error function is defined by:
+/// <math display="block"><mi>erf</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mn>2</mn><msqrt><mi>π</mi></msqrt></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><msup><mi>e</mi><mrow><mo>-</mo><msup><mi>t</mi><mn>2</mn></msup></mrow></msup><mi>d</mi><mi>t</mi></math>
 ///
 /// This implementation uses 53-bit (`f64`) rational approximation tables.
 /// It uses a direct approximation for small inputs and complementary
