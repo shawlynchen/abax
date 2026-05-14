@@ -26,6 +26,7 @@ mod betaincinv;
 mod norminv;
 mod normcdf;
 mod normpdf;
+mod lognpdf;
 
 pub use beta::beta;
 pub use betaln::betaln;
@@ -46,6 +47,8 @@ pub use trigamma::trigamma;
 pub use norminv::norminv;
 pub use normcdf::normcdf;
 pub use normpdf::normpdf;
+pub use lognpdf::lognpdf;
+
 
 
 #[cfg(test)]
