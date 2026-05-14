@@ -29,6 +29,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `normpdf(x, mu, sigma)`: Normal probability density function.
   - `norminv(p, mu, sigma)`: Inverse of the normal cumulative distribution function (quantile function).
   - `lognpdf(x, mu, sigma)`: Lognormal probability density function.
+  - `logncdf(x, mu, sigma, upper)`: Lognormal cumulative distribution function.
 
 ## Usage
 
@@ -36,7 +37,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.21"
+abax = "0.1.23"
 ```
 
 ## License
