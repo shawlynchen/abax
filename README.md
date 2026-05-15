@@ -2,6 +2,13 @@
 
 A lightweight Rust library providing high-precision mathematical constants and special functions.
 
+![Crates.io License](https://img.shields.io/crates/l/abax)
+![docs.rs](https://img.shields.io/docsrs/abax)
+![Crates.io Size](https://img.shields.io/crates/size/abax)
+![Crates.io Total Downloads](https://img.shields.io/crates/d/abax)
+
+[crates-badge]: http
+
 ## Features
 
 - **Mathematical Constants**:
