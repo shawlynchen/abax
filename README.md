@@ -38,14 +38,16 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `lognpdf(x, mu, sigma)`: Lognormal probability density function.
   - `logncdf(x, mu, sigma, upper)`: Lognormal cumulative distribution function.
   - `logninv(p, mu, sigma)`: Inverse of the lognormal cumulative distribution function.
-
+  - `tpdf(x, v)`: Student's T probability density function.
+  - `tcdf(x, v, upper)`: Student's T cumulative distribution function.
+  
 ## Usage
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.24"
+abax = "0.1.25"
 ```
 
 ## License

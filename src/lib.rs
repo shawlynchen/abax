@@ -29,6 +29,8 @@ mod normpdf;
 mod lognpdf;
 mod logncdf;
 mod logninv;
+mod tpdf;
+mod tcdf;
 
 pub use beta::beta;
 pub use betaln::betaln;
@@ -52,6 +54,8 @@ pub use normpdf::normpdf;
 pub use lognpdf::lognpdf;
 pub use logncdf::logncdf;
 pub use logninv::logninv;
+pub use tpdf::tpdf;
+pub use tcdf::tcdf;
 
 
 #[cfg(test)]
@@ -119,5 +123,10 @@ mod tests {
     fn test_logninv_export() {
         // Median of standard lognormal is 1.0
         assert!((logninv(0.5, 0.0, 1.0) - 1.0).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_tpdf_export() {
+        assert!((tpdf(0.0, 1.0) - 1.0 / std::f64::consts::PI).abs() < 1e-15);
     }
 }
