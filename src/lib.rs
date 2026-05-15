@@ -31,6 +31,7 @@ mod logncdf;
 mod logninv;
 mod tpdf;
 mod tcdf;
+mod tinv;
 
 pub use beta::beta;
 pub use betaln::betaln;
@@ -56,6 +57,7 @@ pub use logncdf::logncdf;
 pub use logninv::logninv;
 pub use tpdf::tpdf;
 pub use tcdf::tcdf;
+pub use tinv::tinv;
 
 
 #[cfg(test)]
