@@ -41,6 +41,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `tpdf(x, v)`: Student's T probability density function.
   - `tcdf(x, v, upper)`: Student's T cumulative distribution function.
   - `tinv(p, v)`: Inverse of the Student's T cumulative distribution function.
+  - `nctpdf(x, nu, delta)`: Noncentral T probability density function.
   - `nctcdf(x, nu, delta, upper)`: Noncentral T cumulative distribution function.
   
 ## Usage

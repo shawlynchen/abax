@@ -38,10 +38,11 @@ use crate::{betainc, gammaln, normcdf, tcdf};
 /// let p = nctcdf(0.0, 5.0, 0.0, false);
 /// assert!((p - 0.5).abs() < 1e-15);
 /// ```
+
 pub fn nctcdf(x: f64, nu: f64, delta: f64, upper: bool) -> f64 {
-    // ------------------------------------------------------------------
-    // Validation
-    // ------------------------------------------------------------------
+    let uppertail = upper;
+    let mut p = 0.0;
+    let sep = f64::EPSILON;
 
     if x.is_nan() || nu.is_nan() || delta.is_nan() {
         return f64::NAN;
@@ -50,314 +51,131 @@ pub fn nctcdf(x: f64, nu: f64, delta: f64, upper: bool) -> f64 {
     if nu <= 0.0 || delta.is_infinite() {
         return f64::NAN;
     }
-
-    // Central t special case
     if delta == 0.0 {
-        return tcdf(x, nu, upper);
+        return tcdf(x, nu, uppertail);
     }
-
-    // Infinite x
     if x == f64::INFINITY {
-        return if upper { 0.0 } else { 1.0 };
+        return if uppertail { 0.0 } else { 1.0 };
     }
-
-    if x == f64::NEG_INFINITY {
-        return if upper { 1.0 } else { 0.0 };
-    }
-
-    // Large-nu normal approximation
-    // Johnson & Kotz eq 26.7.10
-    if nu > 2e6 {
+    if nu > 2.0e6 {
         let s = 1.0 - 1.0 / (4.0 * nu);
         let d = (1.0 + x * x / (2.0 * nu)).sqrt();
-        return normcdf(x * s, delta, d, upper);
+        return normcdf(x * s, delta, d, uppertail);
     }
-
-    // Symmetry relation:
-    // F(-x;nu,delta) = 1 - F(x;nu,-delta)
     if x < 0.0 {
-        return nctcdf(-x, nu, -delta, !upper);
+        return nctcdf(-x, nu, -delta, !uppertail);
     }
-
-    // ------------------------------------------------------------------
-    // Main computation (x >= 0)
-    // ------------------------------------------------------------------
 
     let xsq = x * x;
     let denom = nu + xsq;
-
-    let p_beta = xsq / denom;
-    let q_beta = nu / denom;
-
+    let P = xsq / denom;
+    let Q = nu / denom;
     let dsq = delta * delta;
-    let signd = delta.signum();
 
-    // Base probability P(T < 0)
-    let mut p = if upper {
+    if uppertail {
         if x == 0.0 {
-            normcdf(-delta, 0.0, 1.0, true)
-        } else {
-            0.0
+            p = normcdf(-delta, 0.0, 1.0, true);
         }
     } else {
-        normcdf(-delta, 0.0, 1.0, false)
-    };
-
-    if x == 0.0 {
-        return p;
+        p = normcdf(-delta, 0.0, 1.0, false);
     }
 
-    // ------------------------------------------------------------------
-    // Start near peak of Poisson weights
-    // ------------------------------------------------------------------
+    if x != 0.0 {
+        let signd = delta.signum();
+        let mut subtotal = 0.0;
 
-    let jj0 = 2.0 * (dsq / 2.0).floor();
+        let mut jj = 2.0 * f64::floor(dsq / 2.0);
 
-    // E terms
-    //
-    // exp(0.5*j*log(0.5*dsq) - dsq/2 - gammaln(j/2+1))
-    //
-    // Handle extremely tiny dsq robustly.
-    let log_half_dsq = if dsq > 0.0 {
-        (0.5 * dsq).ln()
-    } else {
-        f64::NEG_INFINITY
-    };
+        let mut E1 = (0.5 * jj * (0.5 * dsq).ln() - dsq / 2.0 - gammaln(jj / 2.0 + 1.0)).exp();
+        let mut E2 = signd * (0.5 * (jj + 1.0) * (0.5 * dsq).ln() - dsq / 2.0 - gammaln((jj + 1.0) / 2.0 + 1.0)).exp();
 
-    let e1_0 = (0.5 * jj0 * log_half_dsq
-        - dsq / 2.0
-        - gammaln(jj0 / 2.0 + 1.0))
-        .exp();
+        let mut t = P < 0.5;
+        let mut B1 = 0.0;
+        let mut B2 = 0.0;
 
-    let e2_0 = signd
-        * (0.5 * (jj0 + 1.0) * log_half_dsq
-            - dsq / 2.0
-            - gammaln((jj0 + 1.0) / 2.0 + 1.0))
-        .exp();
-
-    // ------------------------------------------------------------------
-    // Initial B terms
-    // ------------------------------------------------------------------
-
-    let use_p = p_beta < 0.5;
-
-    let (b1_0, b2_0) = if upper {
-        if use_p {
-            (
-                betainc(
-                    p_beta,
-                    (jj0 + 1.0) / 2.0,
-                    nu / 2.0,
-                    false,
-                ),
-                betainc(
-                    p_beta,
-                    (jj0 + 2.0) / 2.0,
-                    nu / 2.0,
-                    false,
-                ),
-            )
+        if uppertail {
+            if t {
+                B1 = betainc(P, (jj + 1.0) / 2.0, nu / 2.0, false);
+                B2 = betainc(P, (jj + 2.0) / 2.0, nu / 2.0, false);
+            }
+            t = !t;
+            if t {
+                B1 = betainc(Q, nu / 2.0, (jj + 1.0) / 2.0, true);
+                B2 = betainc(Q, nu / 2.0, (jj + 2.0) / 2.0, true);
+            }
         } else {
-            (
-                betainc(
-                    q_beta,
-                    nu / 2.0,
-                    (jj0 + 1.0) / 2.0,
-                    true,
-                ),
-                betainc(
-                    q_beta,
-                    nu / 2.0,
-                    (jj0 + 2.0) / 2.0,
-                    true,
-                ),
-            )
-        }
-    } else {
-        if use_p {
-            (
-                betainc(
-                    p_beta,
-                    (jj0 + 1.0) / 2.0,
-                    nu / 2.0,
-                    true,
-                ),
-                betainc(
-                    p_beta,
-                    (jj0 + 2.0) / 2.0,
-                    nu / 2.0,
-                    true,
-                ),
-            )
-        } else {
-            (
-                betainc(
-                    q_beta,
-                    nu / 2.0,
-                    (jj0 + 1.0) / 2.0,
-                    false,
-                ),
-                betainc(
-                    q_beta,
-                    nu / 2.0,
-                    (jj0 + 2.0) / 2.0,
-                    false,
-                ),
-            )
-        }
-    };
-
-    // ------------------------------------------------------------------
-    // Initial recurrence ratios
-    // ------------------------------------------------------------------
-
-    let r1_0 = (
-        gammaln((jj0 + 1.0) / 2.0 + nu / 2.0)
-            - gammaln((jj0 + 3.0) / 2.0)
-            - gammaln(nu / 2.0)
-            + ((jj0 + 1.0) / 2.0) * p_beta.ln()
-            + (nu / 2.0) * q_beta.ln()
-    )
-        .exp();
-
-    let r2_0 = (
-        gammaln((jj0 + 2.0) / 2.0 + nu / 2.0)
-            - gammaln((jj0 + 4.0) / 2.0)
-            - gammaln(nu / 2.0)
-            + ((jj0 + 2.0) / 2.0) * p_beta.ln()
-            + (nu / 2.0) * q_beta.ln()
-    )
-        .exp();
-
-    let mut subtotal = 0.0;
-
-    // ------------------------------------------------------------------
-    // Upward sweep
-    // ------------------------------------------------------------------
-
-    let mut jj = jj0;
-
-    let mut e1 = e1_0;
-    let mut e2 = e2_0;
-
-    let mut b1 = b1_0;
-    let mut b2 = b2_0;
-
-    let mut r1 = r1_0;
-    let mut r2 = r2_0;
-
-    loop {
-        let twoterms = e1 * b1 + e2 * b2;
-
-        subtotal += twoterms;
-
-        // Convergence
-        if twoterms.abs() <= subtotal.abs() * 1e-15 {
-            break;
+            if t {
+                B1 = betainc(P, (jj + 1.0) / 2.0, nu / 2.0, true);
+                B2 = betainc(P, (jj + 2.0) / 2.0, nu / 2.0, true);
+            }
+            t = !t;
+            if t {
+                B1 = betainc(Q, nu / 2.0, (jj + 1.0) / 2.0, false);
+                B2 = betainc(Q, nu / 2.0, (jj + 2.0) / 2.0, false);
+            }
         }
 
-        jj += 2.0;
+        let mut R1 = (gammaln((jj + 1.0) / 2.0 + nu / 2.0) - gammaln((jj + 3.0) / 2.0) - gammaln(nu / 2.0) + 
+            ((jj + 1.0) / 2.0) * P.ln() + (nu / 2.0) * Q.ln()).exp();
+        let mut R2 = (gammaln((jj + 2.0) / 2.0 + nu / 2.0) - gammaln((jj + 4.0) / 2.0) - gammaln(nu / 2.0) + 
+            ((jj + 2.0) / 2.0) * P.ln() + (nu / 2.0) * Q.ln()).exp();
 
-        e1 *= dsq / jj;
-        e2 *= dsq / (jj + 1.0);
+        let E10 = E1;
+        let E20 = E2;
+        let B10 = B1;
+        let B20 = B2;
+        let R10 = R1;
+        let R20 = R2;
+        let j0 = jj;
 
-        if upper {
-            b1 = betainc(
-                p_beta,
-                (jj + 1.0) / 2.0,
-                nu / 2.0,
-                false,
-            );
-
-            b2 = betainc(
-                p_beta,
-                (jj + 2.0) / 2.0,
-                nu / 2.0,
-                false,
-            );
-        } else {
-            b1 -= r1;
-            b2 -= r2;
-
-            r1 *= p_beta * (jj + nu - 1.0) / (jj + 1.0);
-
-            r2 *= p_beta * (jj + nu) / (jj + 2.0);
+        while true {
+            let twoterms = E1 * B1 + E2 * B2;
+            subtotal += twoterms;
+            if twoterms.abs() <= (subtotal.abs() + sep) * sep {
+                break;
+            }
+            jj += 2.0;
+            E1 *= dsq / jj;
+            E2 *= dsq / (jj + 1.0);
+            if uppertail {
+                B1 = betainc(P, (jj + 1.0) / 2.0, nu / 2.0, false);
+                B2 = betainc(P, (jj + 2.0) / 2.0, nu / 2.0, false);
+            } else {
+                B1 -= R1;
+                B2 -= R2;
+                R1 *= P * (jj + nu - 1.0) / (jj + 1.0);
+                R2 *= P * (jj + nu) / (jj + 2.0);
+            }
         }
-
-        if jj > 100000.0 {
-            break;
+        E1 = E10;
+        E2 = E20;
+        B1 = B10;
+        B2 = B20;
+        R1 = R10;
+        R2 = R20;
+        jj = j0;
+        let mut todo = jj > 0.0;
+        while todo {
+            let JJ = jj;
+            E1 *= JJ / dsq;
+            E2 *= (JJ + 1.0) / dsq;
+            R1 *= (JJ + 1.0) / ((JJ + nu - 1.0) * P);
+            R2 *= (JJ + 2.0) / ((JJ + nu) * P);
+            if uppertail {
+                B1 = betainc(P, (JJ - 1.0) / 2.0, nu / 2.0, false);
+                B2 = betainc(P, JJ / 2.0, nu / 2.0, false);
+            } else {
+                B1 += R1;
+                B2 += R2;
+            }
+            let twoterms = E1 * B1 + E2 * B2;
+            subtotal += twoterms;
+            jj -= 2.0;
+            todo = twoterms.abs() > (subtotal.abs() + sep) * sep && jj > 0.0;
         }
+        p = f64::min(1.0, f64::max(0.0, p + subtotal / 2.0));
     }
-
-    // ------------------------------------------------------------------
-    // Downward sweep
-    // ------------------------------------------------------------------
-
-    jj = jj0;
-
-    e1 = e1_0;
-    e2 = e2_0;
-
-    b1 = b1_0;
-    b2 = b2_0;
-
-    r1 = r1_0;
-    r2 = r2_0;
-
-    while jj > 0.0 {
-        let jj_cur = jj;
-
-        e1 *= jj_cur / dsq;
-        e2 *= (jj_cur + 1.0) / dsq;
-
-        r1 *= (jj_cur + 1.0)
-            / ((jj_cur + nu - 1.0) * p_beta);
-
-        r2 *= (jj_cur + 2.0)
-            / ((jj_cur + nu) * p_beta);
-
-        if upper {
-            b1 = betainc(
-                p_beta,
-                (jj_cur - 1.0) / 2.0,
-                nu / 2.0,
-                false,
-            );
-
-            b2 = betainc(
-                p_beta,
-                jj_cur / 2.0,
-                nu / 2.0,
-                false,
-            );
-        } else {
-            b1 += r1;
-            b2 += r2;
-        }
-
-        let twoterms = e1 * b1 + e2 * b2;
-
-        subtotal += twoterms;
-
-        if twoterms.abs() <= subtotal.abs() * 1e-15 {
-            break;
-        }
-
-        jj -= 2.0;
-    }
-
-    // ------------------------------------------------------------------
-    // Final probability
-    // ------------------------------------------------------------------
-
-    if upper {
-        let p_gt_0 = normcdf(-delta, 0.0, 1.0, true);
-
-        p = p_gt_0 - subtotal / 2.0;
-    } else {
-        p += subtotal / 2.0;
-    }
-
+    
     p.clamp(0.0, 1.0)
 }
 
@@ -378,9 +196,8 @@ mod tests {
     #[test]
     fn test_nctcdf_known_values() {
         let tol = 1e-10;
-        println!("{:.17}", nctcdf(2.0, 5.0, 1.0, false));
-        println!("{:.17}", nctcdf(2.0, 10.0, 2.0, false));
         // Comparison with standard statistical tables/software (e.g., R nctcdf)
+        println!("{:.16e}", nctcdf(2.0, 5.0, 1.0, false));
         // nu=5, delta=1, x=2
         assert!((nctcdf(2.0, 5.0, 1.0, false) - 7.7807466261621487e-1).abs() < tol);
         // nu=10, delta=2, x=2
@@ -403,5 +220,11 @@ mod tests {
         assert_eq!(nctcdf(f64::INFINITY, 5.0, 1.0, false), 1.0);
         assert_eq!(nctcdf(f64::NEG_INFINITY, 5.0, 1.0, false), 0.0);
         assert!(nctcdf(1.0, 0.0, 1.0, false).is_nan());
+    }
+
+    #[test]
+    fn fff() {
+        let x = nctcdf(-1.0, 5.0, -1.0, false);
+        println!("{:16}", x);
     }
 }

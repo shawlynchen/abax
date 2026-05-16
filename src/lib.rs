@@ -32,6 +32,7 @@ mod logninv;
 mod tpdf;
 mod tcdf;
 mod tinv;
+mod nctpdf;
 mod nctcdf;
 
 pub use beta::beta;
@@ -59,6 +60,7 @@ pub use logninv::logninv;
 pub use tpdf::tpdf;
 pub use tcdf::tcdf;
 pub use tinv::tinv;
+pub use nctpdf::nctpdf;
 pub use nctcdf::nctcdf;
 
 
