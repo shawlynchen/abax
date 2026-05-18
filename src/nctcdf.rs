@@ -39,6 +39,7 @@ use crate::{betainc, gammaln, normcdf, tcdf};
 /// assert!((p - 0.5).abs() < 1e-15);
 /// ```
 
+#[allow(non_snake_case)]
 pub fn nctcdf(x: f64, nu: f64, delta: f64, upper: bool) -> f64 {
     let uppertail = upper;
     let mut p = 0.0;
@@ -128,7 +129,7 @@ pub fn nctcdf(x: f64, nu: f64, delta: f64, upper: bool) -> f64 {
         let R20 = R2;
         let j0 = jj;
 
-        while true {
+        loop {
             let twoterms = E1 * B1 + E2 * B2;
             subtotal += twoterms;
             if twoterms.abs() <= (subtotal.abs() + sep) * sep {

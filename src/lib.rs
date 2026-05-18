@@ -34,6 +34,9 @@ mod tcdf;
 mod tinv;
 mod nctpdf;
 mod nctcdf;
+mod stirlerr;
+mod binodeviance;
+mod gampdf;
 
 pub use beta::beta;
 pub use betaln::betaln;
@@ -62,7 +65,7 @@ pub use tcdf::tcdf;
 pub use tinv::tinv;
 pub use nctpdf::nctpdf;
 pub use nctcdf::nctcdf;
-
+pub use gampdf::gampdf;
 
 
 #[cfg(test)]

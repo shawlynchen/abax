@@ -43,6 +43,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `tinv(p, v)`: Inverse of the Student's T cumulative distribution function.
   - `nctpdf(x, nu, delta)`: Noncentral T probability density function.
   - `nctcdf(x, nu, delta, upper)`: Noncentral T cumulative distribution function.
+  - `gampdf(x, a, b)`: Gamma probability density function.
   
 ## Usage
 
@@ -50,7 +51,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.28"
+abax = "0.1.29"
 ```
 
 ## License
