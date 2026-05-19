@@ -32,8 +32,8 @@ A lightweight Rust library providing high-precision mathematical constants and s
     - `erf(x)`, `erfc(x)`, `erfcx(x)`: Error function, complementary error function, and scaled variant.
     - `erfinv(x)`, `erfcinv(x)`: Inverse error functions implemented with piecewise rational approximations.
 - **Probability Distributions**:
-  - `normcdf(x, mu, sigma, upper)`: Normal cumulative distribution function.
   - `normpdf(x, mu, sigma)`: Normal probability density function.
+  - `normcdf(x, mu, sigma, upper)`: Normal cumulative distribution function.
   - `norminv(p, mu, sigma)`: Inverse of the normal cumulative distribution function (quantile function).
   - `lognpdf(x, mu, sigma)`: Lognormal probability density function.
   - `logncdf(x, mu, sigma, upper)`: Lognormal cumulative distribution function.
@@ -44,6 +44,8 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - `nctpdf(x, nu, delta)`: Noncentral T probability density function.
   - `nctcdf(x, nu, delta, upper)`: Noncentral T cumulative distribution function.
   - `gampdf(x, a, b)`: Gamma probability density function.
+  - `gamcdf(x, a, b, upper)`: Gamma cumulative distribution function.
+  - `gaminv(p, a, b)`: Inverse Gamma cumulative distribution function.
   
 ## Usage
 
@@ -51,7 +53,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.29"
+abax = "0.1.30"
 ```
 
 ## License
