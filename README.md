@@ -40,6 +40,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Student's T** | `tpdf(x, v)` | `tcdf(x, v, upper)` | `tinv(p, v)` |
   | **Noncentral T**| `nctpdf(x, ν, δ)`| `nctcdf(x, ν, δ, upper)` | `nctinv(p, ν, δ)` |
   | **Gamma** | `gampdf(x, a, b)` | `gamcdf(x, a, b, upper)` | `gaminv(p, a, b)` |
+  | **Beta** | `betapdf(x, a, b)` | - | - |
   
 ## Usage
 
@@ -47,7 +48,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.31"
+abax = "0.1.32"
 ```
 
 ## License
