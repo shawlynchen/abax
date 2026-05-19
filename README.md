@@ -32,20 +32,14 @@ A lightweight Rust library providing high-precision mathematical constants and s
     - `erf(x)`, `erfc(x)`, `erfcx(x)`: Error function, complementary error function, and scaled variant.
     - `erfinv(x)`, `erfcinv(x)`: Inverse error functions implemented with piecewise rational approximations.
 - **Probability Distributions**:
-  - `normpdf(x, mu, sigma)`: Normal probability density function.
-  - `normcdf(x, mu, sigma, upper)`: Normal cumulative distribution function.
-  - `norminv(p, mu, sigma)`: Inverse of the normal cumulative distribution function (quantile function).
-  - `lognpdf(x, mu, sigma)`: Lognormal probability density function.
-  - `logncdf(x, mu, sigma, upper)`: Lognormal cumulative distribution function.
-  - `logninv(p, mu, sigma)`: Inverse of the lognormal cumulative distribution function.
-  - `tpdf(x, v)`: Student's T probability density function.
-  - `tcdf(x, v, upper)`: Student's T cumulative distribution function.
-  - `tinv(p, v)`: Inverse of the Student's T cumulative distribution function.
-  - `nctpdf(x, nu, delta)`: Noncentral T probability density function.
-  - `nctcdf(x, nu, delta, upper)`: Noncentral T cumulative distribution function.
-  - `gampdf(x, a, b)`: Gamma probability density function.
-  - `gamcdf(x, a, b, upper)`: Gamma cumulative distribution function.
-  - `gaminv(p, a, b)`: Inverse Gamma cumulative distribution function.
+
+  | Family | PDF | CDF (inc. upper tail) | Inverse (Quantile) |
+  |:---|:---|:---|:---|
+  | **Normal** | `normpdf(x, μ, σ)` | `normcdf(x, μ, σ, upper)` | `norminv(p, μ, σ)` |
+  | **Lognormal** | `lognpdf(x, μ, σ)` | `logncdf(x, μ, σ, upper)` | `logninv(p, μ, σ)` |
+  | **Student's T** | `tpdf(x, v)` | `tcdf(x, v, upper)` | `tinv(p, v)` |
+  | **Noncentral T**| `nctpdf(x, ν, δ)`| `nctcdf(x, ν, δ, upper)` | - |
+  | **Gamma** | `gampdf(x, a, b)` | `gamcdf(x, a, b, upper)` | `gaminv(p, a, b)` |
   
 ## Usage
 
