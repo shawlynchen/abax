@@ -21,6 +21,15 @@ pub fn betainc(x: f64, z: f64, w: f64, lower: bool) -> f64 {
     if x == 1.0 { // Corrected from `x == 1.0` to `x == 1.0` (no change, just re-evaluating)
         return if lower { 1.0 } else { 0.0 };
     }
+    if z == w {
+        if z == 1.0 {
+            return x;
+        }
+        if x == 0.5 {
+            return 0.5;
+        }
+    }
+
 
     // Use symmetry: I_x(a, b) = 1 - I_{1-x}(b, a)
     // To ensure the continued fraction converges efficiently, we want x < (z+1)/(z+w+2)
