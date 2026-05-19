@@ -38,7 +38,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Normal** | `normpdf(x, μ, σ)` | `normcdf(x, μ, σ, upper)` | `norminv(p, μ, σ)` |
   | **Lognormal** | `lognpdf(x, μ, σ)` | `logncdf(x, μ, σ, upper)` | `logninv(p, μ, σ)` |
   | **Student's T** | `tpdf(x, v)` | `tcdf(x, v, upper)` | `tinv(p, v)` |
-  | **Noncentral T**| `nctpdf(x, ν, δ)`| `nctcdf(x, ν, δ, upper)` | - |
+  | **Noncentral T**| `nctpdf(x, ν, δ)`| `nctcdf(x, ν, δ, upper)` | `nctinv(p, ν, δ)` |
   | **Gamma** | `gampdf(x, a, b)` | `gamcdf(x, a, b, upper)` | `gaminv(p, a, b)` |
   
 ## Usage
@@ -47,7 +47,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.30"
+abax = "0.1.31"
 ```
 
 ## License
