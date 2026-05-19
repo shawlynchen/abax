@@ -33,7 +33,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
     - `erfinv(x)`, `erfcinv(x)`: Inverse error functions implemented with piecewise rational approximations.
 - **Probability Distributions**:
 
-  | Family | PDF | CDF (inc. upper tail) | Inverse (Quantile) |
+  | Family | PDF | CDF | Inverse (Quantile) |
   |:---|:---|:---|:---|
   | **Normal** | `normpdf(x, μ, σ)` | `normcdf(x, μ, σ, upper)` | `norminv(p, μ, σ)` |
   | **Lognormal** | `lognpdf(x, μ, σ)` | `logncdf(x, μ, σ, upper)` | `logninv(p, μ, σ)` |
