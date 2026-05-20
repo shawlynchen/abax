@@ -42,6 +42,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Gamma** | `gampdf(x, a, b)` | `gamcdf(x, a, b, upper)` | `gaminv(p, a, b)` |
   | **Beta** | `betapdf(x, a, b)` | `betacdf(x, a, b, upper)` | `betainv(p, a, b)` |
   | **Exponential** | `expdf(x, λ)` | `expcdf(x, λ, upper)` | `expinv(p, λ)` |
+  | **Chi-squared** | `chi2pdf(x, v)` | `chi2cdf(x, v, upper)` | `chi2inv(p, v)` |
   
 ## Usage
 
@@ -49,7 +50,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abax = "0.1.35"
+abax = "*"
 ```
 
 ## License
