@@ -22,7 +22,8 @@ use crate::{normpdf, nctcdf, gammaln};
 ///     <mi>ν</mi>
 ///     <mi>x</mi>
 ///   </mfrac>
-///   <mfenced open="[" close="]">
+///   <mrow>
+///     <mo>[</mo>
 ///     <mrow>
 ///       <msub>
 ///         <mi>F</mi>
@@ -31,7 +32,8 @@ use crate::{normpdf, nctcdf, gammaln};
 ///          <mi>T</mi>
 ///        </mrow>
 ///      </msub>
-///      <mfenced separators="|" open="(" close=")">
+///      <mrow>
+///      <mo>(</mo>
 ///        <mrow>
 ///          <mi>x</mi>
 ///          <msqrt>
@@ -51,7 +53,8 @@ use crate::{normpdf, nctcdf, gammaln};
 ///          <mo>,</mo>
 ///          <mi>δ</mi>
 ///        </mrow>
-///      </mfenced>
+///      <mo>)</mo>
+///      </mrow>
 ///      <mo>-</mo>
 ///      <msub>
 ///        <mi>F</mi>
@@ -60,7 +63,8 @@ use crate::{normpdf, nctcdf, gammaln};
 ///          <mi>T</mi>
 ///        </mrow>
 ///      </msub>
-///      <mfenced separators="|" open="(" close=")">
+///      <mrow>
+///      <mo>(</mo>
 ///        <mrow>
 ///          <mi>x</mi>
 ///          <mo>;</mo>
@@ -68,9 +72,11 @@ use crate::{normpdf, nctcdf, gammaln};
 ///          <mo>,</mo>
 ///          <mi>δ</mi>
 ///        </mrow>
-///      </mfenced>
+///      <mo>)</mo>
+///      </mrow>
 ///    </mrow>
-///  </mfenced>
+///    <mo>]</mo>
+///  </mrow>
 /// </math>
 /// for <math><mi>x</mi><mo>≠</mo><mn>0</mn></math>. Special handling is applied for <math><mi>x</mi><mo>=</mo><mn>0</mn></math> and very large <math><mi>ν</mi></math>.
 ///
