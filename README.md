@@ -43,7 +43,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Beta** | `betapdf(x, a, b)` | `betacdf(x, a, b, upper)` | `betainv(p, a, b)` |
   | **Exponential** | `expdf(x, λ)` | `expcdf(x, λ, upper)` | `expinv(p, λ)` |
   | **Chi-squared** | `chi2pdf(x, v)` | `chi2cdf(x, v, upper)` | `chi2inv(p, v)` |
-  | **Binomial** | `binopdf(x, n, p)` | | |
+  | **Binomial** | `binopdf(x, n, p)` | `binocdf(x, n, p, upper)` | |
   
 ## Usage
 
