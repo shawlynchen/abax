@@ -72,6 +72,7 @@ mod nctpdf;
 mod nctcdf;
 mod nctinv;
 mod wblpdf;
+mod wblcdf;
 mod stirlerr;
 mod binodeviance;
 mod gampdf;
@@ -126,6 +127,7 @@ pub use nctpdf::nctpdf;
 pub use nctcdf::nctcdf;
 pub use nctinv::nctinv;
 pub use wblpdf::wblpdf;
+pub use wblcdf::wblcdf;
 
 
 #[cfg(test)]
