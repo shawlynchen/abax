@@ -12,7 +12,7 @@
 //! ### Probability Distributions
 //! Comprehensive support for Probability Density Functions (PDF), Cumulative Distribution 
 //! Functions (CDF), and Quantile Functions (Inverse CDF) for common distributions:
-//! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, Gamma, Beta, Exponential, Chi-squared.
+//! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, Gamma, Beta, Exponential, Chi-squared, Weibull.
 //! - **Discrete**: Binomial, Poisson.
 //! 
 //! ### Special Functions
@@ -21,23 +21,11 @@
 //! - **Beta Family**: Beta, Log-Beta, and Regularized Incomplete Beta functions.
 //! - **Error Functions**: Erf, Erfc, Erfcx, and their high-precision inverses.
 //! 
-//! ### Numerical Precision
-//! The library utilizes various sophisticated numerical techniques to maintain accuracy across 
-//! extreme input domains:
-//! - **Asymptotic Expansions**: Stirling's approximation and Bernoulli-based series for large arguments.
-//! - **Continued Fractions**: Modified Lentz's method for incomplete functions.
-//! - **Rational Approximations**: High-degree minimax approximations for error and inverse functions.
-//! - **Root Finding**: Combined Halley, Newton, and bisection methods for inverse distributions.
-//! 
 //! ### Constants
 //! Provides high-precision mathematical constants including:
 //! - Bernoulli numbers (<math><msub><mi>B</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>)
 //! - Riemann Zeta values (<math><mi>ζ</mi><mo>(</mo><mi>s</mi><mo>)</mo></math>)
 //! - Stirling series coefficients
-//! 
-//! ## Mathematical Markup
-//! Documentation uses MathML/HTML for clear mathematical definitions, ensuring compatibility 
-//! with modern documentation browsers.
 
 mod consts;
 mod digamma;
@@ -83,6 +71,7 @@ mod tinv;
 mod nctpdf;
 mod nctcdf;
 mod nctinv;
+mod wblpdf;
 mod stirlerr;
 mod binodeviance;
 mod gampdf;
@@ -118,6 +107,9 @@ pub use chi2inv::chi2inv;
 pub use exppdf::exppdf;
 pub use expcdf::expcdf;
 pub use expinv::expinv;
+pub use gampdf::gampdf;
+pub use gamcdf::gamcdf;
+pub use gaminv::gaminv;
 pub use norminv::norminv;
 pub use normcdf::normcdf;
 pub use normpdf::normpdf;
@@ -133,9 +125,7 @@ pub use tinv::tinv;
 pub use nctpdf::nctpdf;
 pub use nctcdf::nctcdf;
 pub use nctinv::nctinv;
-pub use gampdf::gampdf;
-pub use gamcdf::gamcdf;
-pub use gaminv::gaminv;
+pub use wblpdf::wblpdf;
 
 
 #[cfg(test)]
