@@ -44,6 +44,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Exponential** | `expdf(x, λ)` | `expcdf(x, λ, upper)` | `expinv(p, λ)` |
   | **Chi-squared** | `chi2pdf(x, v)` | `chi2cdf(x, v, upper)` | `chi2inv(p, v)` |
   | **Weibull** | `wblpdf(x, a, b)` | `wblcdf(x, a, b, upper)` | `wblinv(p, a, b)` |
+  | **Extreme Value** | `evpdf(x, μ, σ)` | - | - |
   | **Poisson** | `poisspdf(x, λ)` | `poisscdf(x, λ, upper)` | `poissinv(p, λ)` |
   | **Binomial** | `binopdf(x, n, p)` | `binocdf(x, n, p, upper)` | `binoinv(y, n, p)` |
   
