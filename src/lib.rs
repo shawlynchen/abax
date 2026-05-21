@@ -2,9 +2,42 @@
 #![allow(clippy::doc_overindented_list_items)]
 
 //! # abax
-//!
-//! A lightweight Rust library providing high-precision mathematical constants and special functions.
-//! This library includes Bernoulli numbers (<math><msub><mi>B</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>), Riemann Zeta values (<math><mi>ζ</mi><mo>(</mo><mi>s</mi><mo>)</mo></math>), and Stirling series coefficients.
+//! 
+//! A high-performance Rust library for statistical computing and special mathematical functions.
+//! `abax` provides numerically stable and high-precision implementations of probability 
+//! distributions, error functions, and gamma-related functions.
+//! 
+//! ## Features
+//! 
+//! ### Probability Distributions
+//! Comprehensive support for Probability Density Functions (PDF), Cumulative Distribution 
+//! Functions (CDF), and Quantile Functions (Inverse CDF) for common distributions:
+//! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, Gamma, Beta, Exponential, Chi-squared.
+//! - **Discrete**: Binomial, Poisson.
+//! 
+//! ### Special Functions
+//! - **Gamma Family**: Gamma, Log-Gamma, Digamma, Trigamma, Tetragamma, and Polygamma (<math><msup><mi>ψ</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup></math>).
+//! - **Incomplete Gamma**: Regularized incomplete gamma functions and their inverses.
+//! - **Beta Family**: Beta, Log-Beta, and Regularized Incomplete Beta functions.
+//! - **Error Functions**: Erf, Erfc, Erfcx, and their high-precision inverses.
+//! 
+//! ### Numerical Precision
+//! The library utilizes various sophisticated numerical techniques to maintain accuracy across 
+//! extreme input domains:
+//! - **Asymptotic Expansions**: Stirling's approximation and Bernoulli-based series for large arguments.
+//! - **Continued Fractions**: Modified Lentz's method for incomplete functions.
+//! - **Rational Approximations**: High-degree minimax approximations for error and inverse functions.
+//! - **Root Finding**: Combined Halley, Newton, and bisection methods for inverse distributions.
+//! 
+//! ### Constants
+//! Provides high-precision mathematical constants including:
+//! - Bernoulli numbers (<math><msub><mi>B</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>)
+//! - Riemann Zeta values (<math><mi>ζ</mi><mo>(</mo><mi>s</mi><mo>)</mo></math>)
+//! - Stirling series coefficients
+//! 
+//! ## Mathematical Markup
+//! Documentation uses MathML/HTML for clear mathematical definitions, ensuring compatibility 
+//! with modern documentation browsers.
 
 mod consts;
 mod digamma;
