@@ -62,7 +62,7 @@ pub fn wblinv(p: f64, a: f64, b: f64) -> f64 {
 
     // 4. Transform probability to the intermediate quantile variable 'q'
     // log1p(-p) evaluates ln(1 + (-p)) = ln(1 - p) precisely for values near 0.
-    let q = -(-p).log1p();
+    let q = -(-p).ln_1p();
 
     // 5. Calculate final scale translation
     a * q.powf(1.0 / b)
