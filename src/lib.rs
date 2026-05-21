@@ -12,7 +12,7 @@
 //! ### Probability Distributions
 //! Comprehensive support for Probability Density Functions (PDF), Cumulative Distribution 
 //! Functions (CDF), and Quantile Functions (Inverse CDF) for common distributions:
-//! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, Gamma, Beta, Exponential, Chi-squared, Weibull, Extreme Value.
+//! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, Gamma, Beta, Exponential, Chi-squared, Weibull, Extreme Value, Generalized Extreme Value.
 //! - **Discrete**: Binomial, Poisson.
 //! 
 //! ### Special Functions
@@ -80,6 +80,8 @@ mod gamcdf;
 pub use gamcdf::gamcdf;
 mod gaminv;
 pub use gaminv::gaminv;
+mod gevpdf;
+pub use gevpdf::gevpdf;
 mod normpdf;
 pub use normpdf::normpdf;
 mod normcdf;
