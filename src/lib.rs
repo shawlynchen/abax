@@ -78,6 +78,8 @@ mod fpdf;
 pub use fpdf::fpdf;
 mod fcdf;
 pub use fcdf::fcdf;
+mod finv;
+pub use finv::finv;
 mod gampdf;
 pub use gampdf::gampdf;
 mod gamcdf;

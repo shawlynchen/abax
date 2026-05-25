@@ -7,7 +7,7 @@ use crate::{nctcdf, nctpdf, norminv, tinv};
 /// random variable being less than or equal to `x` is `p`.
 ///
 /// # Mathematical Definition
-/// The function finds $x$ such that:
+/// The function finds <math><mi>x</mi></math> such that:
 /// <math display="block">
 ///   <msub><mi>F</mi><mrow><mi>NC</mi><mi>T</mi></mrow></msub>
 ///   <mo>(</mo><mi>x</mi><mo>;</mo><mi>ν</mi><mo>,</mo><mi>δ</mi><mo>)</mo>

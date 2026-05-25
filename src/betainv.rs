@@ -7,7 +7,7 @@ use crate::betaincinv;
 /// random variable being less than or equal to `x` is `p`.
 ///
 /// # Mathematical Definition
-/// The function finds $x$ such that:
+/// The function finds <math><mi>x</mi></math> such that:
 /// <math display="block">
 ///   <msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>)</mo>
 ///   <mo>=</mo>
