@@ -23,7 +23,7 @@ pub fn betainc(x: f64, z: f64, w: f64, lower: bool) -> f64 {
     }
     if z == w {
         if z == 1.0 {
-            return x;
+            return if lower { x } else { 1.0 - x };
         }
         if x == 0.5 {
             return 0.5;
