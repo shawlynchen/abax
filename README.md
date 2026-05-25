@@ -39,6 +39,7 @@ A lightweight Rust library providing high-precision mathematical constants and s
   | **Lognormal** | `lognpdf(x, μ, σ)` | `logncdf(x, μ, σ, upper)` | `logninv(p, μ, σ)` |
   | **Student's T** | `tpdf(x, v)` | `tcdf(x, v, upper)` | `tinv(p, v)` |
   | **Noncentral T**| `nctpdf(x, ν, δ)`| `nctcdf(x, ν, δ, upper)` | `nctinv(p, ν, δ)` |
+  | **F** | `fpdf(x, v1, v2)` | | |
   | **Gamma** | `gampdf(x, a, b)` | `gamcdf(x, a, b, upper)` | `gaminv(p, a, b)` |
   | **Beta** | `betapdf(x, a, b)` | `betacdf(x, a, b, upper)` | `betainv(p, a, b)` |
   | **Exponential** | `expdf(x, λ)` | `expcdf(x, λ, upper)` | `expinv(p, λ)` |
