@@ -76,6 +76,8 @@ mod expinv;
 pub use expinv::expinv;
 mod fpdf;
 pub use fpdf::fpdf;
+mod fcdf;
+pub use fcdf::fcdf;
 mod gampdf;
 pub use gampdf::gampdf;
 mod gamcdf;
