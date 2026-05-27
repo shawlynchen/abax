@@ -31,6 +31,8 @@ A lightweight Rust library providing high-precision mathematical constants and s
   - **Error Functions**:
     - `erf(x)`, `erfc(x)`, `erfcx(x)`: Error function, complementary error function, and scaled variant.
     - `erfinv(x)`, `erfcinv(x)`: Inverse error functions implemented with piecewise rational approximations.
+  - **Bessel Functions**:
+    - `besseli(nu, x, scale)`: Modified Bessel function of the first kind <math><msub><mi>I</mi><mi>ν</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></math> with optional exponential scaling to prevent overflow.
 - **Probability Distributions**:
 
   | Family | PDF | CDF | Inverse (Quantile) |

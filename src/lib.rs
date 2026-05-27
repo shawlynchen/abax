@@ -20,6 +20,7 @@
 //! - **Incomplete Gamma**: Regularized incomplete gamma functions and their inverses.
 //! - **Beta Family**: Beta, Log-Beta, and Regularized Incomplete Beta functions.
 //! - **Error Functions**: Erf, Erfc, Erfcx, and their high-precision inverses.
+//! - **Bessel Functions**: Modified Bessel function of the first kind (<math><msub><mi>I</mi><mi>ν</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></math>).
 //! 
 //! ### Constants
 //! Provides high-precision mathematical constants including:
@@ -28,6 +29,8 @@
 //! - Stirling series coefficients
 
 mod consts;
+mod besseli;
+pub use besseli::besseli;
 mod digamma;
 mod erf;
 mod erfc;
