@@ -46,35 +46,27 @@ use crate::{chi2inv, betainc, betaincinv};
 /// assert!((x95 - 3.325834530413011).abs() < 1e-14);
 /// ```
 pub fn finv(p: f64, v1: f64, v2: f64) -> f64 {
-    let ok_v = 0.0 < v1 && v1 < f64::INFINITY && 0.0 < v2 && v2 < f64::INFINITY;
-    let k = ok_v && (0.0 <= p && p <= 1.0);
-    let all_ok = k;
-
-    if !all_ok {
-        let mut x = f64::NAN;
-        if v2 > 0.0 && v2 < f64::INFINITY && v1 == f64::INFINITY && (0.0 <= p && p <= 1.0) {
-            x = v2 / chi2inv(1.0 - p, v2);
-        }
-        if v1 > 0.0 && v1 < f64::INFINITY && v2 == f64::INFINITY && (0.0 <= p && p <= 1.0) {
-            x = chi2inv(p, v1) / v1;
-        }
-        if v1 == f64::INFINITY && v2 == f64::INFINITY && (0.0 <= p && p <= 1.0) {
-            x = if p == 0.0 { 0.0 } else { 1.0 };
-        }
-        return x;
+    if p < 0.0 || 1.0 < p || p.is_nan() || v1.is_nan() || v2.is_nan() || v1 <= 0.0 || v2 <= 0.0 {
+        return f64::NAN;
     }
 
-    // Get the smaller of z or 1-z to give the best precision
-    let up = p > betainc(0.5, v1 / 2.0, v2 / 2.0, true);
-    let t = if up {
-        let z_up = betaincinv(p, v2 / 2.0, v1 / 2.0, false);
-        (1.0 - z_up) / z_up
-    } else {
-        let z_lo = betaincinv(p, v1 / 2.0, v2 / 2.0, true);
-        z_lo / (1.0 - z_lo)
-    };
-    let x = t * v2 / v1;
-    return x;
+    match (v1, v2) {
+        (f64::INFINITY, f64::INFINITY) => return if p == 0.0 { 0.0 } else { 1.0 },
+        (f64::INFINITY, _) if v2 < f64::INFINITY => return v2 / chi2inv(1.0 - p, v2),
+        (_, f64::INFINITY) if v1 < f64::INFINITY => return chi2inv(p, v1) / v1,
+        _ => {
+            // Get the smaller of z or 1-z to give the best precision
+            let up = p > betainc(0.5, v1 / 2.0, v2 / 2.0, true);
+            let t = if up {
+                let z_up = betaincinv(p, v2 / 2.0, v1 / 2.0, false);
+                (1.0 - z_up) / z_up
+            } else {
+                let z_lo = betaincinv(p, v1 / 2.0, v2 / 2.0, true);
+                z_lo / (1.0 - z_lo)
+            };
+            return t * v2 / v1;
+        },
+    }
 }
 
 #[cfg(test)]
