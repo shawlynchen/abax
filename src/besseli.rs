@@ -1,7 +1,7 @@
 use crate::gammaln;
 use std::f64::consts::PI;
 
-/// Compute the modified Bessel function of the first kind $I_\nu(x)$ for non-negative real input.
+/// Compute the modified Bessel function of the first kind <math><msub><mi>I</mi><mi>v</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></math> for non-negative real input.
 ///
 /// The modified Bessel function of the first kind is defined as a solution to the
 /// modified Bessel differential equation:
@@ -13,15 +13,15 @@ use std::f64::consts::PI;
 ///
 /// This implementation uses a combination of strategies for numerical stability:
 /// - **Power Series**: Used for small arguments.
-/// - **Asymptotic Expansion (Large x)**: Used when the argument is much larger than the order.
-/// - **Debye Asymptotics (Large $\nu$)**: Used when the order is large.
+/// - **Asymptotic Expansion (Large <math><mi>x</mi></math>)**: Used when the argument is much larger than the order.
+/// - **Debye Asymptotics (Large <math><mi>ν</mi></math>)**: Used when the order is large.
 /// - **Miller's Backward Recurrence**: Used for the intermediate region.
 ///
 /// # Parameters
 /// * `nu` - Order of the Bessel function (must be non-negative).
 /// * `x` - Real argument (must be non-negative).
-/// * `scale` - If `true`, returns the exponentially scaled function $I_\nu(x) \cdot e^{-x}$
-///   to prevent numerical overflow for large $x$.
+/// * `scale` - If `true`, returns the exponentially scaled function <math><msub><mi>I</mi><mi>ν</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>⋅</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>x</mi></mrow></msup></math>
+///   to prevent numerical overflow for large <math><mi>x</mi></math>.
 ///
 /// # Domain
 /// * Returns `NaN` if `nu < 0` or `x < 0`.
