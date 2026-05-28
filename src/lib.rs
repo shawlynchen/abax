@@ -31,6 +31,8 @@
 mod consts;
 mod besseli;
 pub use besseli::besseli;
+mod besselj;
+pub use besselj::besselj;
 mod digamma;
 mod erf;
 mod erfc;
