@@ -124,7 +124,7 @@ pub fn gamma(x: f64) -> f64 {
 
     let t = z + G + 0.5;
 
-    SQRT_2PI * t.powf(z + 0.5) * (-t).exp() * a
+    SQRT_2PI * f64::exp((z + 0.5) * f64::ln(t) - t + f64::ln(a))
 }
 
 /// Evaluates the Gamma function Γ(x) using the approximation from 
