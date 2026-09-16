@@ -97,7 +97,7 @@ mod gevcdf;
 pub use gevcdf::gevcdf;
 mod gevinv;
 pub use gevinv::gevinv;
-mod normpdf;
+mod normpdf; // last updated: 2024-06-20
 pub use normpdf::{dnorm, normpdf};
 mod normcdf;
 pub use normcdf::normcdf;
