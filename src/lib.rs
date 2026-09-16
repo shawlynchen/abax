@@ -2,37 +2,42 @@
 #![allow(clippy::doc_overindented_list_items)]
 
 //! # abax
-//! 
+//!
 //! A high-performance Rust library for statistical computing and special mathematical functions.
-//! `abax` provides numerically stable and high-precision implementations of probability 
+//! `abax` provides numerically stable and high-precision implementations of probability
 //! distributions, error functions, and gamma-related functions.
-//! 
+//!
 //! ## Features
-//! 
+//!
 //! ### Probability Distributions
-//! Comprehensive support for Probability Density Functions (PDF), Cumulative Distribution 
+//! Comprehensive support for Probability Density Functions (PDF), Cumulative Distribution
 //! Functions (CDF), and Quantile Functions (Inverse CDF) for common distributions:
 //! - **Continuous**: Normal, Lognormal, Student's T, Noncentral T, F, Gamma, Beta, Exponential, Chi-squared, Weibull, Extreme Value, Generalized Extreme Value.
 //! - **Discrete**: Binomial, Poisson.
-//! 
+//!
 //! ### Special Functions
 //! - **Gamma Family**: Gamma, Log-Gamma, Digamma, Trigamma, Tetragamma, and Polygamma (<math><msup><mi>ψ</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></msup></math>).
 //! - **Incomplete Gamma**: Regularized incomplete gamma functions and their inverses.
 //! - **Beta Family**: Beta, Log-Beta, and Regularized Incomplete Beta functions.
 //! - **Error Functions**: Erf, Erfc, Erfcx, and their high-precision inverses.
 //! - **Bessel Functions**: Modified Bessel function of the first kind (<math><msub><mi>I</mi><mi>ν</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo></math>).
-//! 
+//!
 //! ### Constants
 //! Provides high-precision mathematical constants including:
 //! - Bernoulli numbers (<math><msub><mi>B</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub></math>)
 //! - Riemann Zeta values (<math><mi>ζ</mi><mo>(</mo><mi>s</mi><mo>)</mo></math>)
 //! - Stirling series coefficients
 
-mod consts;
 mod besseli;
+mod consts;
 pub use besseli::besseli;
 mod besselj;
 pub use besselj::besselj;
+mod beta;
+mod betainc;
+mod betaincinv;
+mod betaln;
+mod betapdf;
 mod digamma;
 mod erf;
 mod erfc;
@@ -45,11 +50,6 @@ mod gammaln;
 mod psi;
 mod tetragamma;
 mod trigamma;
-mod beta;
-mod betaln;
-mod betainc;
-mod betaincinv;
-mod betapdf;
 pub use betapdf::betapdf;
 mod betacdf;
 pub use betacdf::betacdf;
@@ -98,7 +98,7 @@ pub use gevcdf::gevcdf;
 mod gevinv;
 pub use gevinv::gevinv;
 mod normpdf;
-pub use normpdf::normpdf;
+pub use normpdf::{dnorm, normpdf};
 mod normcdf;
 pub use normcdf::normcdf;
 mod norminv;
@@ -133,14 +133,14 @@ mod wblcdf;
 pub use wblcdf::wblcdf;
 mod wblinv;
 pub use wblinv::wblinv;
-mod stirlerr;
 mod binodeviance;
 mod dgammainc;
+mod stirlerr;
 
 pub use beta::beta;
-pub use betaln::betaln;
 pub use betainc::betainc;
 pub use betaincinv::betaincinv;
+pub use betaln::betaln;
 pub use digamma::digamma;
 pub use erf::erf;
 pub use erfc::erfc;
@@ -153,7 +153,6 @@ pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;
 pub use trigamma::trigamma;
-
 
 #[cfg(test)]
 mod tests {
