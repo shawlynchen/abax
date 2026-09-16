@@ -9,17 +9,16 @@ use crate::consts::SQRT_2PI;
 /// For a normal distribution with mean <math><mi>μ</mi></math> and standard deviation <math><mi>σ</mi></math>:
 /// <math display="block"><mi>f</mi><mo>(</mo><mi>x</mi><mo>;</mo><mi>μ</mi><mo>,</mo><mi>σ</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>σ</mi><msqrt><mn>2</mn><mi>π</mi></msqrt></mrow></mfrac><msup><mi>e</mi><mrow><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mfrac><mrow><mi>x</mi><mo>-</mo><mi>μ</mi></mrow><mi>σ</mi></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></msup></math>
 ///
-/// # Domain
-/// - `sigma > 0`
-/// - Returns `NaN` if `sigma <= 0` or any input is `NaN`.
-///
 /// # Examples
 /// ```
-/// use abax::normpdf;
+/// use abax::{normpdf, dnorm};
 ///
 /// // Peak of standard normal is 1/sqrt(2*pi) approx 0.39894228
 /// assert!((normpdf(0.0, 0.0, 1.0) - 0.3989422804014327).abs() < 1e-15);
+/// assert!((dnorm(8.0, 0.0, 1.0, true) + 32.918938533204674).abs() < 1e-15);
 /// ```
+///
+/// last updated: 2024-06-20
 pub fn normpdf(x: f64, mu: f64, sigma: f64) -> f64 {
     if x.is_nan() || mu.is_nan() || sigma.is_nan() || sigma <= 0.0 {
         return f64::NAN;
@@ -27,6 +26,15 @@ pub fn normpdf(x: f64, mu: f64, sigma: f64) -> f64 {
 
     let z = (x - mu) / sigma;
     (-0.5 * z * z).exp() / (sigma * SQRT_2PI)
+}
+
+pub fn dnorm(x: f64, mu: f64, sigma: f64, give_log: bool) -> f64 {
+    if give_log {
+        let z = (x - mu) / sigma;
+        -0.5 * z * z - (sigma * SQRT_2PI).ln()
+    } else {
+        normpdf(x, mu, sigma)
+    }
 }
 
 #[cfg(test)]
