@@ -22,6 +22,9 @@ pub(crate) fn R_nonint(x: f64) -> bool {
     f64::abs(x) - R_forceint(x) > 1.0e-7 * fmax2(1.0, f64::abs(x))
 }
 
+pub(crate) fn ISNAN(x: f64) -> bool {
+    x.is_nan()
+}
 pub(crate) fn R_FINITE(x: f64) -> bool {
     x.is_finite()
 }

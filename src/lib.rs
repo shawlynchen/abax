@@ -101,8 +101,8 @@ mod normpdf; // last updated: 2026-9-16
 pub use normpdf::{dnorm, normpdf};
 mod normcdf; // last updated: 2026-9-17
 pub use normcdf::{normcdf, pnorm};
-mod norminv;
-pub use norminv::norminv;
+mod norminv; // last updated: 2026-9-17
+pub use norminv::{norminv, qnorm};
 mod lognpdf;
 pub use lognpdf::lognpdf;
 mod logncdf;
