@@ -97,10 +97,10 @@ mod gevcdf;
 pub use gevcdf::gevcdf;
 mod gevinv;
 pub use gevinv::gevinv;
-mod normpdf; // last updated: 2024-06-20
+mod normpdf; // last updated: 2026-9-16
 pub use normpdf::{dnorm, normpdf};
-mod normcdf;
-pub use normcdf::normcdf;
+mod normcdf; // last updated: 2026-9-17
+pub use normcdf::{normcdf, pnorm};
 mod norminv;
 pub use norminv::norminv;
 mod lognpdf;
@@ -153,6 +153,8 @@ pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;
 pub use trigamma::trigamma;
+
+mod rutils;
 
 #[cfg(test)]
 mod tests {
