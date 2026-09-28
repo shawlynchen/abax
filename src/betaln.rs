@@ -88,7 +88,7 @@ mod tests {
 
     #[test]
     fn test_betaln_domain() {
-        assert!(betaln(0.0, 1.0).is_nan());
+        assert!(betaln(0.0, 1.0).is_infinite());
         assert!(betaln(1.0, -1.0).is_nan());
         assert!(betaln(f64::NAN, 1.0).is_nan());
     }
