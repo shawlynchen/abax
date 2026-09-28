@@ -43,10 +43,12 @@ mod erf;
 mod erfc;
 mod erfcinv;
 mod erfinv;
-mod gamma;
+mod gamma; // last updated 2026-9-28
+pub use gamma::gamma;
 mod gammainc;
 mod gammaincinv;
-mod gammaln;
+mod gammaln; // last updated 2026-0-28
+pub use gammaln::{gammaln, lgamma};
 mod psi;
 mod tetragamma;
 mod trigamma;
@@ -146,13 +148,12 @@ pub use erf::erf;
 pub use erfc::erfc;
 pub use erfcinv::erfcinv;
 pub use erfinv::erfinv;
-pub use gamma::gamma;
 pub use gammainc::gammainc;
 pub use gammaincinv::gammaincinv;
-pub use gammaln::gammaln;
 pub use psi::psi;
 pub use tetragamma::tetragamma;
 pub use trigamma::trigamma;
+
 
 mod rutils;
 

@@ -1,5 +1,5 @@
 #![allow(non_snake_case, dead_code)]
-use crate::consts::LN2;
+use crate::consts::{LN2, M_PI};
 
 pub(crate) fn R_forceint(x: f64) -> f64 {
     f64::round_ties_even(x)
@@ -268,4 +268,89 @@ pub(crate) fn R_D_nonint_check(x: f64, log_p: bool) -> Option<f64> {
         return Some(R_D__0(log_p));
     }
     return None;
+}
+
+pub(crate) fn chebyshev_init(dos: &[f64], nos: i32, eta: f64) -> i32 {
+    if nos < 1 {
+        return 0;
+    }
+    let mut err = 0.0;
+    for ii in 1..=nos {
+        let i = nos - ii;
+        err += f64::abs(dos[i as usize]);
+        if err > eta {
+            return i;
+        }
+    }
+    return 0;
+}
+
+pub(crate) fn chebyshev_eval(x: f64, a: &[f64], n: usize) -> f64 {
+    if n < 1 || n > 1000 {
+        return f64::NAN;
+    }
+
+    if x < -1.1 || x > 1.1 {
+        return f64::NAN;
+    }
+
+    let twox = x * 2.0;
+    let mut b0 = 0.0;
+    let mut b1 = 0.0;
+    let mut b2 = 0.0;
+
+    for i in 1..=n {
+        b2 = b1;
+        b1 = b0;
+        b0 = twox * b1 - b2 + a[n - i];
+    }
+
+    return (b0 - b2) * 0.5;
+}
+
+pub(crate) fn cospi(x: f64) -> f64 {
+    if ISNAN(x) {
+        return x;
+    }
+    if !R_FINITE(x) {
+        return f64::NAN;
+    }
+
+    let x = f64::abs(x) % 2.0;
+    if x % 1.0 == 0.5 {
+        return 0.0;
+    }
+    if x == 1.0 {
+        return -1.0;
+    }
+    if x == 0.0 {
+        return 1.0;
+    }
+    f64::cos(M_PI * x)
+}
+pub(crate) fn sinpi(x: f64) -> f64 {
+    if ISNAN(x) {
+        return x;
+    }
+    if !R_FINITE(x) {
+        return f64::NAN;
+    }
+
+    let mut x = x % 2.0;
+    // map (-2, 2) --> (-1, 1]
+    if x <= -1.0 {
+        x += 2.0;
+    } else if x > 1.0 {
+        x -= 2.0;
+    }
+    if x == 0.0 || x == 1.0 {
+        return 0.0;
+    }
+    if x == 0.5 {
+        return 1.0;
+    }
+    if x == -0.5 {
+        return -1.0;
+    }
+    f64::sin(M_PI * x)
 }
