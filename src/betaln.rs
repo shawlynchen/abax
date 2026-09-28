@@ -1,21 +1,75 @@
-use crate::gammaln;
+use crate::rutils::{ISNAN, R_FINITE};
+use crate::consts::{ML_NEGINF, ML_POSINF, M_LN_SQRT_2PI};
+use crate::gammaln::{lgammacor, lgammafn, lgamma};
+use crate::gamma::gammafn;
 
 /// Natural logarithm of the Beta function.
 ///
+/// See also [`lbeta`](./fn.lbeta.html).
+/// 
 /// The Beta function is defined as:
-/// B(z, w) = Γ(z)Γ(w) / Γ(z + w)
+/// 
+/// <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+///   <mi>B</mi><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo>
+///   <mo>=</mo>
+///   <mfrac>
+///     <mrow><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>)</mo><mi>Γ</mi><mo>(</mo><mi>w</mi><mo>)</mo></mrow>
+///     <mrow><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>+</mo><mi>w</mi><mo>)</mo></mrow>
+///   </mfrac>
+/// </math>
 ///
-/// This function computes ln(B(z, w)) using the logarithmic Gamma function
+/// This function computes <math xmlns="http://www.w3.org/1998/Math/MathML">
+///   <mi>ln</mi><mo>⁡</mo><mi>B</mi><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo>
+/// </math> using the logarithmic Gamma function
 /// to maintain numerical stability and avoid overflow/underflow.
-///
-/// # Domain
-/// - `z > 0`, `w > 0`
-/// - Invalid inputs return `NaN`.
+/// 
+/// <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+///   <mi>ln</mi><mo></mo><mi>B</mi><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo>
+///   <mo>=</mo>
+///   <mi>ln</mi><mo>⁡</mo><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>)</mo>
+///   <mo>+</mo>
+///   <mi>ln</mi><mo>⁡</mo><mi>Γ</mi><mo>(</mo><mi>w</mi><mo>)</mo>
+///   <mo>−</mo>
+///   <mi>ln</mi><mo>⁡</mo><mi>Γ</mi><mo>(</mo><mi>z</mi><mo>+</mo><mi>w</mi><mo>)</mo>
+/// </math>
 pub fn betaln(z: f64, w: f64) -> f64 {
-    if z <= 0.0 || w <= 0.0 || z.is_nan() || w.is_nan() {
-        return f64::NAN;
+    lbeta(z, w)
+}
+
+/// See [`betaln`](./fn.betaln.html) for details.
+pub fn lbeta(a: f64, b: f64) -> f64 {
+    if ISNAN(a) || ISNAN(b) {
+	    return f64::NAN;
     }
-    gammaln(z) + gammaln(w) - gammaln(z + w)
+
+    let p = f64::min(a, b);
+    let q = f64::max(a, b);
+
+    /* both arguments must be >= 0 */
+    if p < 0.0 {
+        return f64::NAN;
+    } else if p == 0.0 {
+	    return ML_POSINF;
+    } else if !R_FINITE(q) { /* q == +Inf */
+	    return ML_NEGINF;
+    }
+
+    if p >= 10.0 {
+	    /* p and q are big. */
+	    let corr = lgammacor(p) + lgammacor(q) - lgammacor(p + q);
+	    return f64::ln(q) * - 0.5 + M_LN_SQRT_2PI + corr + (p - 0.5) * f64::ln(p / (p + q)) + q * f64::ln_1p(-p / (p + q));
+    } else if q >= 10.0 {
+	    /* p is small, but q is big. */
+	    let corr = lgammacor(q) - lgammacor(p + q);
+	    return lgammafn(p) + corr + p - p * f64::ln(p + q) + (q - 0.5) * f64::ln_1p(-p / (p + q));
+    } else {
+	    /* p and q are small: p <= q < 10. */
+	    if p < 1e-306 {
+            return lgamma(p) + (lgamma(q) - lgamma(p+q));
+        } else {
+            return f64::ln(gammafn(p) * (gammafn(q) / gammafn(p + q)));
+        }
+    }
 }
 
 #[cfg(test)]

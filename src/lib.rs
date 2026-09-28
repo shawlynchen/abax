@@ -36,7 +36,8 @@ pub use besselj::besselj;
 mod beta;
 mod betainc;
 mod betaincinv;
-mod betaln;
+mod betaln; // last updated 2026-9-28
+pub use betaln::{betaln, lbeta};
 mod betapdf;
 mod digamma;
 mod erf;
@@ -142,7 +143,6 @@ mod stirlerr;
 pub use beta::beta;
 pub use betainc::betainc;
 pub use betaincinv::betaincinv;
-pub use betaln::betaln;
 pub use digamma::digamma;
 pub use erf::erf;
 pub use erfc::erfc;
