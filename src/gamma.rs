@@ -4,77 +4,46 @@ use crate::gammaln::lgammacor;
 use crate::stirlerr::stirlerr;
 
 
-/// Calculates the Gamma function Γ(x) using the Lanczos approximation.
+///Calculates the Gamma function defined by
 ///
-/// This implementation utilizes the Lanczos approximation
-/// with a shift parameter <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>=</mo><mn>7.0</mn></math>
-/// and <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>=</mo><mn>9</mn></math> coefficients.
+///<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+///  <mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+///  <mo>=</mo>
+///  <msubsup><mo>∫</mo><mn>0</mn><mo>∞</mo></msubsup>
+///  <msup><mi>t</mi><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msup>
+///  <msup><mi>e</mi><mrow><mo>−</mo><mi>t</mi></mrow></msup>
+///  <mi>d</mi><mi>t</mi>
+///</math>
 ///
-/// # Mathematical Definition
-/// The Gamma function is an extension of the factorial function to complex numbers.
-/// For a real number <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>></mo><mn>0</mn></math>,
-/// it is defined by the integral:
+///for <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>></mo><mn>0</mn></math>.
 ///
-/// <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
-///   <mi>Γ</mi>
-///   <mo stretchy="false">(</mo>
-///   <mi>x</mi>
-///   <mo stretchy="false">)</mo>
-///   <mo>=</mo>
-///   <msubsup>
-///     <mo>∫</mo>
-///     <mn>0</mn>
-///     <mi>∞</mi>
-///   </msubsup>
-///   <msup>
-///     <mi>t</mi>
-///     <mrow>
-///       <mi>x</mi>
-///       <mo>−</mo>
-///       <mn>1</mn>
-///     </mrow>
-///   </msup>
-///   <msup>
-///     <mi>e</mi>
-///     <mrow>
-///       <mo>−</mo>
-///       <mi>t</mi>
-///     </mrow>
-///   </msup>
-///   <mi>d</mi>
-///   <mi>t</mi>
-/// </math>
+///It also satisfies the recurrence
 ///
-/// # Implementation Details
-/// - **Reflection Formula**: For <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>&lt;</mo><mn>0.5</mn></math>,
-///   the implementation maintains stability using the reflection formula:
-///   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
-///     <mi>Γ</mi>
-///     <mo stretchy="false">(</mo>
-///     <mi>x</mi>
-///     <mo stretchy="false">)</mo>
-///     <mo>=</mo>
-///     <mfrac>
-///       <mi>π</mi>
-///       <mrow>
-///         <mi>sin</mi>
-///         <mo>⁡</mo>
-///         <mo stretchy="false">(</mo>
-///         <mi>π</mi>
-///         <mi>x</mi>
-///         <mo stretchy="false">)</mo>
-///         <mi>Γ</mi>
-///         <mo stretchy="false">(</mo>
-///         <mn>1</mn>
-///         <mo>−</mo>
-///         <mi>x</mi>
-///         <mo stretchy="false">)</mo>
-///       </mrow>
-///     </mfrac>
-///   </math>
-/// - **Exact Integers**: Returns <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mi>x</mi><mo>-</mo><mn>1</mn><mo>)</mo><mo>!</mo></math>
-///   for integers up to 23 using a pre-calculated lookup table for maximum precision.
-/// - **Numerical Stability**: Handles poles at non-positive integers and special cases like `NaN` and `Infinity`.
+///<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+///  <mi>Γ</mi><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo>
+///  <mo>=</mo>
+///  <mi>x</mi><mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+///</math>
+///
+///which allows the implementation to reduce many arguments to a convenient range.
+///
+///For negative non-integer <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>, the function is computed using Euler's reflection formula:
+///
+///<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+///  <mi>Γ</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+///  <mo>=</mo>
+///  <mfrac>
+///    <mi>π</mi>
+///    <mrow>
+///      <mi>sin</mi><mo>(</mo><mi>π</mi><mi>x</mi><mo>)</mo>
+///      <mi>Γ</mi><mo>(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo>)</mo>
+///    </mrow>
+///  </mfrac>
+///</math>
+///
+///Thus, the negative argument is converted to a positive argument.
+///
+///At zero and negative integers, Gamma has poles, so the function returns the corresponding infinite or non-finite result.
 ///
 /// # Examples
 /// ```
@@ -182,7 +151,7 @@ pub(crate) fn gammafn(x: f64) -> f64 {
 
 	        /* The answer is less than half precision */
 	        /* because x too near a negative integer. */
-	        if x < -0.5 && f64::abs(x - (x - 0.5).floor() / x) < DXREL {
+	        if x < -0.5 && f64::abs((x - (x - 0.5).floor()) / x) < DXREL {
                 // warning about precision issue of gammafn
 	        }
 
