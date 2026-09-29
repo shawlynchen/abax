@@ -156,6 +156,7 @@ pub use trigamma::trigamma;
 
 
 mod rutils;
+mod toms708;
 
 #[cfg(test)]
 mod tests {

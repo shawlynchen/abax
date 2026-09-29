@@ -11,7 +11,9 @@ use crate::{betainc, betaln, beta};
 /// - `0 <= y <= 1`
 /// - Invalid inputs return `NaN`.
 pub fn betaincinv(y: f64, z: f64, w: f64, lower: bool) -> f64 {
-    if y.is_nan() || z.is_nan() || w.is_nan() || z <= 0.0 || w <= 0.0 || !(0.0..=1.0).contains(&y) {
+    if y.is_nan() || z.is_nan() || w.is_nan() || z.is_infinite() || w.is_infinite()
+        || z <= 0.0 || w <= 0.0 || !(0.0..=1.0).contains(&y)
+    {
         return f64::NAN;
     }
 
@@ -119,4 +121,13 @@ mod tests {
         // I_x(1, 1) = x, so inv(y) = y
         assert!((betaincinv(0.42, 1.0, 1.0, true) - 0.42).abs() < 1e-15);
     }
+
+    #[test]
+    fn test_betaincinv_rejects_infinite_shape_parameters() {
+        assert!(betaincinv(0.5, f64::INFINITY, 1.0, true).is_nan());
+        assert!(betaincinv(0.5, 1.0, f64::INFINITY, true).is_nan());
+        assert!(betaincinv(0.5, f64::NEG_INFINITY, 1.0, true).is_nan());
+        assert!(betaincinv(0.5, 1.0, f64::NEG_INFINITY, true).is_nan());
+    }
+
 }

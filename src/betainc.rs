@@ -11,7 +11,9 @@ use crate::betaln;
 /// - `z > 0`, `w > 0`
 /// - Invalid inputs return `NaN`.
 pub fn betainc(x: f64, z: f64, w: f64, lower: bool) -> f64 {
-    if x.is_nan() || z.is_nan() || w.is_nan() || x < 0.0 || x > 1.0 || z <= 0.0 || w <= 0.0 {
+    if x.is_nan() || z.is_nan() || w.is_nan() || z.is_infinite() || w.is_infinite()
+        || x < 0.0 || x > 1.0 || z <= 0.0 || w <= 0.0
+    {
         return f64::NAN;
     }
 
@@ -118,5 +120,13 @@ mod tests {
     fn test_betainc_boundaries() {
         assert_eq!(betainc(0.0, 1.0, 1.0, true), 0.0);
         assert_eq!(betainc(1.0, 1.0, 1.0, true), 1.0);
+    }
+
+    #[test]
+    fn test_betainc_rejects_infinite_shape_parameters() {
+        assert!(betainc(0.5, f64::INFINITY, 1.0, true).is_nan());
+        assert!(betainc(0.5, 1.0, f64::INFINITY, true).is_nan());
+        assert!(betainc(0.5, f64::NEG_INFINITY, 1.0, true).is_nan());
+        assert!(betainc(0.5, 1.0, f64::NEG_INFINITY, true).is_nan());
     }
 }
