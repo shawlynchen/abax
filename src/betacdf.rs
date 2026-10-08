@@ -69,7 +69,7 @@ mod tests {
     #[test]
     fn test_betacdf_uniform() {
         // a=1, b=1 is Uniform(0,1)
-        assert_eq!(betacdf(0.1, 1.0, 1.0, false), 0.1);
+        assert!(f64::abs(betacdf(0.1, 1.0, 1.0, false) - 0.1) < 1e-15);
         assert_eq!(betacdf(0.5, 1.0, 1.0, false), 0.5);
         assert_eq!(betacdf(0.9, 1.0, 1.0, false), 0.9);
     }

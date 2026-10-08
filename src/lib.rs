@@ -34,7 +34,8 @@ pub use besseli::besseli;
 mod besselj;
 pub use besselj::besselj;
 mod beta;
-mod betainc;
+mod betainc;  // last updated 2026-10-8
+pub use betainc::{betainc, pbeta};
 mod betaincinv;
 mod betaln; // last updated 2026-9-28
 pub use betaln::{betaln, lbeta};
@@ -48,7 +49,7 @@ mod gamma; // last updated 2026-9-28
 pub use gamma::gamma;
 mod gammainc;
 mod gammaincinv;
-mod gammaln; // last updated 2026-0-28
+mod gammaln; // last updated 2026-9-28
 pub use gammaln::{gammaln, lgamma};
 mod psi;
 mod tetragamma;
@@ -141,7 +142,6 @@ mod dgammainc;
 mod stirlerr;
 
 pub use beta::beta;
-pub use betainc::betainc;
 pub use betaincinv::betaincinv;
 pub use digamma::digamma;
 pub use erf::erf;
@@ -167,6 +167,7 @@ mod tests {
         assert_eq!(gammaln(1.0), 0.0);
     }
 
+    
     #[test]
     fn test_erf_export() {
         assert!((erf(1.0) - 0.8427007929497149).abs() < 1e-15);

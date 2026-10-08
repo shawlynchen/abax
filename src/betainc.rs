@@ -1,96 +1,205 @@
-use crate::betaln;
+use crate::toms708::bratio;
+use crate::rutils::{ISNAN, R_DT_1, R_DT_0, R_FINITE};
+use crate::consts::M_LN2;
 
 /// Regularized incomplete beta function <math><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math>.
 ///
+/// See also [`pbeta`](./fn.pbeta.html).
+/// 
 /// Solves for:
 /// - <math><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math> when `lower = true` (regularized lower incomplete beta)
 /// - <math><mn>1</mn><mo>-</mo><msub><mi>I</mi><mi>x</mi></msub><mo>(</mo><mi>z</mi><mo>,</mo><mi>w</mi><mo>)</mo></math> when `lower = false` (regularized upper incomplete beta)
-///
-/// # Domain
-/// - `0 <= x <= 1`
-/// - `z > 0`, `w > 0`
-/// - Invalid inputs return `NaN`.
+/// 
+/// The regularized incomplete beta function:
+/// 
+/// <math display="block">
+///   <msub>
+///     <mi>I</mi>
+///     <mi>x</mi>
+///   </msub>
+///   <mo stretchy="false">(</mo>
+///   <mi>z</mi>
+///   <mo>,</mo>
+///   <mi>w</mi>
+///   <mo stretchy="false">)</mo>
+///   <mo>=</mo>
+///   <mfrac>
+///     <mrow>
+///       <mi>B</mi>
+///       <mo stretchy="false">(</mo>
+///       <mi>x</mi>
+///       <mo>;</mo>
+///       <mi>z</mi>
+///       <mo>,</mo>
+///       <mi>w</mi>
+///       <mo stretchy="false">)</mo>
+///     </mrow>
+///     <mrow>
+///       <mi>B</mi>
+///       <mo stretchy="false">(</mo>
+///       <mi>z</mi>
+///       <mo>,</mo>
+///       <mi>w</mi>
+///       <mo stretchy="false">)</mo>
+///     </mrow>
+///   </mfrac>
+///   <mo>=</mo>
+///   <mfrac>
+///     <mn>1</mn>
+///     <mrow>
+///       <mi>B</mi>
+///       <mo stretchy="false">(</mo>
+///       <mi>z</mi>
+///       <mo>,</mo>
+///       <mi>w</mi>
+///       <mo stretchy="false">)</mo>
+///     </mrow>
+///   </mfrac>
+///   <msubsup>
+///     <mo>&int;</mo>
+///     <mn>0</mn>
+///     <mi>x</mi>
+///   </msubsup>
+///   <msup>
+///     <mi>t</mi>
+///     <mrow>
+///       <mi>z</mi>
+///       <mo>&minus;</mo>
+///       <mn>1</mn>
+///     </mrow>
+///   </msup>
+///   <msup>
+///     <mrow>
+///       <mo stretchy="false">(</mo>
+///       <mn>1</mn>
+///       <mo>&minus;</mo>
+///       <mi>t</mi>
+///       <mo stretchy="false">)</mo>
+///     </mrow>
+///     <mrow>
+///       <mi>w</mi>
+///       <mo>&minus;</mo>
+///       <mn>1</mn>
+///     </mrow>
+///   </msup>
+///   <mspace width="0.167em" />
+///   <mi>d</mi>
+///   <mi>t</mi>
+/// </math>
+/// 
+/// The complete beta function:
+/// 
+/// <math display="block">
+///  <mi>B</mi>
+///  <mo stretchy="false">(</mo>
+///  <mi>z</mi>
+///  <mo>,</mo>
+///  <mi>w</mi>
+///  <mo stretchy="false">)</mo>
+///  <mo>=</mo>
+///  <msubsup>
+///    <mo>&#x222B;</mo>
+///    <mn>0</mn>
+///    <mn>1</mn>
+///  </msubsup>
+///  <msup>
+///    <mi>t</mi>
+///    <mrow>
+///      <mi>z</mi>
+///      <mo>&#x2212;</mo>
+///      <mn>1</mn>
+///    </mrow>
+///  </msup>
+///  <msup>
+///    <mrow>
+///      <mo stretchy="false">(</mo>
+///      <mn>1</mn>
+///      <mo>&#x2212;</mo>
+///      <mi>t</mi>
+///      <mo stretchy="false">)</mo>
+///    </mrow>
+///    <mrow>
+///      <mi>w</mi>
+///      <mo>&#x2212;</mo>
+///      <mn>1</mn>
+///    </mrow>
+///  </msup>
+///  <mspace width="0.167em" />
+///  <mi>d</mi>
+///  <mi>t</mi>
+///  <mo>=</mo>
+///  <mfrac>
+///    <mrow>
+///      <mi mathvariant="normal">&#x0393;</mi>
+///      <mo stretchy="false">(</mo>
+///      <mi>z</mi>
+///      <mo stretchy="false">)</mo>
+///      <mi mathvariant="normal">&#x0393;</mi>
+///      <mo stretchy="false">(</mo>
+///      <mi>w</mi>
+///      <mo stretchy="false">)</mo>
+///    </mrow>
+///    <mrow>
+///      <mi mathvariant="normal">&#x0393;</mi>
+///      <mo stretchy="false">(</mo>
+///      <mi>z</mi>
+///      <mo>+</mo>
+///      <mi>w</mi>
+///      <mo stretchy="false">)</mo>
+///    </mrow>
+///  </mfrac>
+///</math>
+
 pub fn betainc(x: f64, z: f64, w: f64, lower: bool) -> f64 {
-    if x.is_nan() || z.is_nan() || w.is_nan() || z.is_infinite() || w.is_infinite()
-        || x < 0.0 || x > 1.0 || z <= 0.0 || w <= 0.0
-    {
+    pbeta(x, z, w, lower, false)
+}
+
+fn pbeta_raw(x: f64, a: f64, b: f64, lower_tail: bool, log_p: bool) -> f64 {
+    if x >= 1.0 { // may happen when called from qbeta()
+        return R_DT_1(lower_tail, log_p);
+    }
+    // treat limit cases correctly here:
+    if a == 0.0 || b == 0.0 || !R_FINITE(a) || !R_FINITE(b) {
+	    // NB:  0 <= x < 1 :
+	    if a == 0.0 && b == 0.0 { // point mass 1/2 at each of {0,1} :
+	        return if log_p { -M_LN2 } else { 0.5 };
+        }
+	    if a == 0.0 || a/b == 0.0 { // point mass 1 at 0 ==> P(X <= x) = 1, all x >= 0
+	        return R_DT_1(lower_tail, log_p);
+        }
+	    if b == 0.0 || b/a == 0.0 { // point mass 1 at 1 ==> P(X <= x) = 0, all x < 1
+	        return R_DT_0(lower_tail, log_p);
+        }
+	    // else, remaining case:  a = b = Inf : point mass 1 at 1/2
+	    return if x < 0.5 { R_DT_0(lower_tail, log_p) } else { R_DT_1(lower_tail, log_p) };
+    }
+    if x <= 0.0 {
+        return R_DT_0(lower_tail, log_p);
+    }
+
+    // Now:  0 < a < Inf;  0 < b < Inf  and  0 < x < 1
+    let x1 = 0.5 - x + 0.5;
+    let ans = bratio(a, b, x, x1);
+    return match log_p {
+        true => if lower_tail { f64::ln(ans.w) } else { f64::ln(ans.w1) },
+        false => if lower_tail { ans.w } else { ans.w1 },
+    };
+}
+
+/// See [`betainc`](./fn.betainc.html) for details.
+pub fn pbeta(x: f64, a: f64, b: f64, lower_tail: bool, log_p: bool) -> f64 {
+    if ISNAN(x) || ISNAN(a) || ISNAN(b) {
         return f64::NAN;
     }
 
-    if x == 0.0 {
-        return if lower { 0.0 } else { 1.0 };
-    }
-    if x == 1.0 { // Corrected from `x == 1.0` to `x == 1.0` (no change, just re-evaluating)
-        return if lower { 1.0 } else { 0.0 };
-    }
-    if z == w {
-        if z == 1.0 {
-            return if lower { x } else { 1.0 - x };
-        }
-        if x == 0.5 {
-            return 0.5;
-        }
+    if a < 0.0 || b < 0.0 {
+        return f64::NAN;
     }
 
-
-    // Use symmetry: I_x(a, b) = 1 - I_{1-x}(b, a)
-    // To ensure the continued fraction converges efficiently, we want x < (z+1)/(z+w+2)
-    if x > (z + 1.0) / (z + w + 2.0) {
-        return if lower {
-            1.0 - betainc_cf(1.0 - x, w, z)
-        } else {
-            betainc_cf(1.0 - x, w, z)
-        };
-    }
-
-    let val = betainc_cf(x, z, w);
-    if lower { val } else { 1.0 - val }
+    // allowing a==0 and b==0  <==> treat as one- or two-point mass
+    return pbeta_raw(x, a, b, lower_tail, log_p);
 }
 
-/// Evaluates the continued fraction for the regularized incomplete beta function.
-/// Uses Lentz's method for stability.
-fn betainc_cf(x: f64, z: f64, w: f64) -> f64 {
-    let ln_beta = betaln(z, w);
-    let front = (z * x.ln() + w * (1.0 - x).ln() - ln_beta).exp() / z;
-
-    let mut c = 1.0;
-    let mut d = 1.0 - (z + w) * x / (z + 1.0);
-    let tiny = 1e-30;
-
-    if d.abs() < tiny { d = tiny; }
-    d = 1.0 / d;
-    let mut h = d;
-
-    for m in 1..200 {
-        let m_f = m as f64;
-        let m2 = 2.0 * m_f;
-        
-        // Even step (2m)
-        let aa = m_f * (w - m_f) * x / ((z + m2 - 1.0) * (z + m2));
-        d = 1.0 + aa * d;
-        if d.abs() < tiny { d = tiny; }
-        c = 1.0 + aa / c;
-        if c.abs() < tiny { c = tiny; }
-        d = 1.0 / d;
-        h *= d * c;
-
-        // Odd step (2m+1)
-        let aa = -(z + m_f) * (z + w + m_f) * x / ((z + m2) * (z + m2 + 1.0));
-        d = 1.0 + aa * d;
-        if d.abs() < tiny { d = tiny; }
-        c = 1.0 + aa / c;
-        if c.abs() < tiny { c = tiny; }
-        d = 1.0 / d;
-        let delta = d * c;
-        h *= delta;
-
-        if (delta - 1.0).abs() < 1e-16 {
-            break;
-        }
-    }
-
-    front * h
-}
 
 #[cfg(test)]
 mod tests {
@@ -124,8 +233,8 @@ mod tests {
 
     #[test]
     fn test_betainc_rejects_infinite_shape_parameters() {
-        assert!(betainc(0.5, f64::INFINITY, 1.0, true).is_nan());
-        assert!(betainc(0.5, 1.0, f64::INFINITY, true).is_nan());
+        assert!(betainc(0.5, f64::INFINITY, 1.0, true) == 0.0);
+        assert!(betainc(0.5, 1.0, f64::INFINITY, true) == 1.0);
         assert!(betainc(0.5, f64::NEG_INFINITY, 1.0, true).is_nan());
         assert!(betainc(0.5, 1.0, f64::NEG_INFINITY, true).is_nan());
     }
