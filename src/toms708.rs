@@ -2194,7 +2194,7 @@ mod bratio_tests {
     #[test]
     fn err_y_negative() {
         // E6: y < 0
-        let r = bratio(2.0, 3.0, 1.1, -0.1);
+        let _r = bratio(2.0, 3.0, 1.1, -0.1);
         // Note: x > 1 is caught first, so use a case where x is valid
         // but y is negative.
         let r = bratio(2.0, 3.0, 0.5, -0.1);
@@ -2206,7 +2206,7 @@ mod bratio_tests {
     #[test]
     fn err_y_greater_than_one() {
         // E7: y > 1
-        let r = bratio(2.0, 3.0, -0.1, 1.1);
+        let _r = bratio(2.0, 3.0, -0.1, 1.1);
         // x < 0 is caught first, so use valid x.
         let r = bratio(2.0, 3.0, 0.5, 1.1);
         assert_eq!(r.ierr, 4);
@@ -2545,16 +2545,16 @@ mod bratio_tests {
     fn alg_label_120_via_lambda_small() {
         // label 40 → b0 >= 40 → a0 > b0, a0 > 100, lambda <= 0.03*a0
         // → label 120.
-        let a = 200.0;
-        let b = 50.0;
-        let x = 0.4;
-        let y = 0.6;
+        let _a = 200.0;
+        let _b = 50.0;
+        let _x = 0.4;
+        let _y = 0.6;
         // min = 50 >= 40. a0 = 200 > b0 = 50. a0 > 100.
         // lambda = (a+b)*y - b = 250*0.6 - 50 = 100.
         // 0.03*a0 = 6. lambda=100 > 6, so NOT this path.
         // Need lambda <= 0.03*a0. Try x closer to 1.
-        let x = 0.99;
-        let y = 0.01;
+        let _x = 0.99;
+        let _y = 0.01;
         // lambda = 250*0.01 - 50 = -47.5 < 0 → ind=1, swap.
         // After swap: a0 = 50, b0 = 200, lambda = 47.5.
         // Then b0 = 200 >= 40. a0 = 50 <= b0 = 200. a0 = 50 <= 100.
@@ -2617,8 +2617,8 @@ mod bratio_tests {
         // Need lambda small relative to b0.
         let a = 500.0;
         let b = 200.0;
-        let x = 0.6;
-        let y = 0.4;
+        let _x = 0.6;
+        let _y = 0.4;
         // lambda = 700*0.4 - 200 = 80. 0.03*b0 = 6. 80 > 6. Still 120.
         // Hmm, need lambda <= 6. Try x near the mean a/(a+b) = 500/700 ≈ 0.714.
         let x = 0.71;

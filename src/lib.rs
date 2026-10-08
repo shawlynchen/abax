@@ -33,8 +33,9 @@ mod consts;
 pub use besseli::besseli;
 mod besselj;
 pub use besselj::besselj;
-mod beta;
-mod betainc;  // last updated 2026-10-8
+mod beta; // last updated 2026-10-8
+pub use beta::beta;
+mod betainc; // last updated 2026-10-8
 pub use betainc::{betainc, pbeta};
 mod betaincinv;
 mod betaln; // last updated 2026-9-28
@@ -141,7 +142,6 @@ mod binodeviance;
 mod dgammainc;
 mod stirlerr;
 
-pub use beta::beta;
 pub use betaincinv::betaincinv;
 pub use digamma::digamma;
 pub use erf::erf;
@@ -230,4 +230,5 @@ mod tests {
     fn test_tpdf_export() {
         assert!((tpdf(0.0, 1.0) - 1.0 / std::f64::consts::PI).abs() < 1e-15);
     }
+
 }
