@@ -9,6 +9,8 @@ pub(crate) mod zmlt;
 use zmlt::zmlt;    // fn zmlt(ar: f64, ai: f64, br: f64, bi: f64, cr: &mut f64, ci: &mut f64)
 pub(crate) mod zdiv;
 use zdiv::zdiv;    // fn zdiv(ar: f64, ai: f64, br: f64, bi: f64, cr: &mut f64, ci: &mut f64)
+pub(crate) mod zsqrt;
+use zsqrt::zsqrt;  // fn zsqrt(ar: f64, ai: f64, br: &mut f64, bi: &mut f64)
 pub(crate) mod zlog;
 use zlog::zlog;    // fn zlog(ar: f64, ai: f64, br: &mut f64, bi: &mut f64) -> i32
 pub(crate) mod zexp;
