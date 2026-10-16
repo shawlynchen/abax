@@ -28,6 +28,8 @@ pub(crate) mod zairy;
 use zairy::zairy;  // fn zairy(zr: f64, zi: f64, id: i32, kode: i32, air: &mut f64, aii: &mut f64, nz: &mut i32, ierr: &mut i32)
 pub(crate) mod zasyi;
 use zasyi::zasyi;  // fn zasyi(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
+pub(crate) mod zbesy;
+use zbesy::zbesy;  // fn zbesy(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, cyr: &mut [f64], cyi: &mut [f64], nz: &mut i32, cwrkr: &mut [f64], cwrki: &mut [f64], ierr: &mut i32)
 pub(crate) mod zbiry;
 use zbiry::zbiry;  // fn zbiry(zr: f64, zi: f64, id: i32, kode: i32, bir: &mut f64, bii: &mut f64, ierr: &mut i32)
 pub(crate) mod zbinu;
