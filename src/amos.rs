@@ -63,5 +63,7 @@ pub(crate) mod zuoik;
 use zuoik::zuoik;  // fn zuoik(zr: f64, zi: f64, fnu: f64, kode: i32, ikflg: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nuf: &mut i32, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zunk1;
 use zunk1::zunk1;  // fn zunk1(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64, elim: f64, alim: f64)
+pub(crate) mod zunk2;
+use zunk2::zunk2;  // fn zunk2(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zwrsk;
 use zwrsk::zwrsk;  // fn zwrsk(zrr: f64, zri: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, cwr: &mut [f64; 2], cwi: &mut [f64; 2], tol: f64, elim: f64, alim: f64)
