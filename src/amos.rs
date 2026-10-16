@@ -20,7 +20,8 @@ pub(crate) mod zexp;
 use zexp::zexp;    // fn zexp(ar: f64, ai: f64, br: &mut f64, bi: &mut f64)
 pub(crate) mod zshch;
 use zshch::zshch;  // fn zshch(zr: f64, zi: f64, cshr: &mut f64, cshi: &mut f64, cchr: &mut f64, cchi: &mut f64)
-
+pub(crate) mod zacai;
+use zacai::zacai;  // fn zacai(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zasyi;
 use zasyi::zasyi;  // fn zasyi(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zrati;
