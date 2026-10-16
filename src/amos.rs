@@ -30,6 +30,9 @@ pub(crate) mod zs1s2;
 use zs1s2::zs1s2;  // fn zs1s2(zrr: f64, zri: f64, s1r: &mut f64, s1i: &mut f64, s2r: &mut f64, s2i: &mut f64, nz: &mut i32, ascle: f64, alim: f64, iuf: &mut i32)
 pub(crate) mod zseri;
 use zseri::zseri;  // fn zseri(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64, elim: f64, alim: f64)
+
+pub(crate) mod zbknu;
+use zbknu::zbknu;  // fn zbknu(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zuchk;
 use zuchk::zuchk;  // fn zuchk(yr: f64, yi: f64, nz: &mut i32, ascle: f64, tol: f64)
 
