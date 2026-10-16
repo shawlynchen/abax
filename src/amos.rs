@@ -5,6 +5,10 @@ use d1mach::d1mach;  // fn d1mach(i: i32) -> f64
 
 pub(crate) mod dgamln;
 use dgamln::dgamln;  // fn dgamln(z: f64, ierr: &mut i32) -> f64
+
+pub(crate) mod zasyi;
+use zasyi::zasyi;  // fn zasyi(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
+
 pub(crate) mod zabs;
 use zabs::zabs;    // fn zabs(zr: f64, zi: f64) -> f64
 pub(crate) mod zmlt;

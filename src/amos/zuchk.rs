@@ -14,7 +14,7 @@
 /// - `nz == 1` if an underflow is assumed.
 ///
 /// This is a Rust port of the SLATEC `ZUCHK` routine.
-pub fn zuchk(yr: f64, yi: f64, nz: &mut i32, ascle: f64, tol: f64) {
+pub(crate) fn zuchk(yr: f64, yi: f64, nz: &mut i32, ascle: f64, tol: f64) {
     *nz = 0;
 
     let wr = yr.abs();
