@@ -28,3 +28,6 @@ use zuchk::zuchk;  // fn zuchk(yr: f64, yi: f64, nz: &mut i32, ascle: f64, tol: 
 
 pub(crate) mod zkscl;
 use zkscl::zkscl;  // fn zkscl(zrr: f64, zri: f64, fnu: f64, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rzr: f64, rzi: f64, ascle: f64, tol: f64, elim: f64)
+
+pub(crate) mod zmlri;
+use zmlri::zmlri;  // fn zmlri(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64)
