@@ -22,6 +22,8 @@ pub(crate) mod zshch;
 use zshch::zshch;  // fn zshch(zr: f64, zi: f64, cshr: &mut f64, cshi: &mut f64, cchr: &mut f64, cchi: &mut f64)
 pub(crate) mod zacai;
 use zacai::zacai;  // fn zacai(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
+pub(crate) mod zacon;
+use zacon::zacon;  // fn zacon(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, fnul: f64, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zairy;
 use zairy::zairy;  // fn zairy(zr: f64, zi: f64, id: i32, kode: i32, air: &mut f64, aii: &mut f64, nz: &mut i32, ierr: &mut i32)
 pub(crate) mod zasyi;
