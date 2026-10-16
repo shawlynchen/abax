@@ -43,3 +43,5 @@ pub(crate) mod zunhj;
 use zunhj::zunhj;  // fn zunhj(zr: f64, zi: f64, fnu: f64, ipmtr: i32, tol: f64, phir: &mut f64, phii: &mut f64, argr: &mut f64, argi: &mut f64, zeta1r: &mut f64, zeta1i: &mut f64, zeta2r: &mut f64, zeta2i: &mut f64, asumr: &mut f64, asumi: &mut f64, bsumr: &mut f64, bsumi: &mut f64)
 pub(crate) mod zunik;
 use zunik::zunik;  // fn zunik(zrr: f64, zri: f64, fnu: f64, ikflg: i32, ipmtr: i32, tol: f64, init: &mut i32, phir: &mut f64, phii: &mut f64, zeta1r: &mut f64, zeta1i: &mut f64, zeta2r: &mut f64, zeta2i: &mut f64, sumr: &mut f64, sumi: &mut f64, cwrkr: &mut [f64; 16], cwrki: &mut [f64; 16])
+pub(crate) mod zuoik;
+use zuoik::zuoik;  // fn zuoik(zr: f64, zi: f64, fnu: f64, kode: i32, ikflg: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nuf: &mut i32, tol: f64, elim: f64, alim: f64)
