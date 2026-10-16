@@ -30,6 +30,8 @@ pub(crate) mod zasyi;
 use zasyi::zasyi;  // fn zasyi(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, rl: f64, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zbinu;
 use zbinu::zbinu;  // fn zbinu(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, cyr: &mut [f64], cyi: &mut [f64], nz: &mut i32, rl: f64, fnul: f64, tol: f64, elim: f64, alim: f64)
+pub(crate) mod zbuni;
+use zbuni::zbuni;  // fn zbuni(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, nui: i32, nlast: &mut i32, fnul: f64, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zrati;
 use zrati::zrati;  // fn zrati(zr: f64, zi: f64, fnu: f64, n: i32, cyr: &mut [f64], cyi: &mut [f64], tol: f64)
 pub(crate) mod zs1s2;
