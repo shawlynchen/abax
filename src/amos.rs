@@ -36,3 +36,5 @@ use zkscl::zkscl;  // fn zkscl(zrr: f64, zri: f64, fnu: f64, n: i32, yr: &mut [f
 
 pub(crate) mod zmlri;
 use zmlri::zmlri;  // fn zmlri(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64)
+pub(crate) mod zunik;
+use zunik::zunik;  // fn zunik(zrr: f64, zri: f64, fnu: f64, ikflg: i32, ipmtr: i32, tol: f64, init: &mut i32, phir: &mut f64, phii: &mut f64, zeta1r: &mut f64, zeta1i: &mut f64, zeta2r: &mut f64, zeta2i: &mut f64, sumr: &mut f64, sumi: &mut f64, cwrkr: &mut [f64; 16], cwrki: &mut [f64; 16])
