@@ -23,6 +23,9 @@ pub(crate) mod zexp;
 use zexp::zexp;    // fn zexp(ar: f64, ai: f64, br: &mut f64, bi: &mut f64)
 pub(crate) mod zshch;
 use zshch::zshch;  // fn zshch(zr: f64, zi: f64, cshr: &mut f64, cshi: &mut f64, cchr: &mut f64, cchi: &mut f64)
+
+pub(crate) mod zrati;
+use zrati::zrati;  // fn zrati(zr: f64, zi: f64, fnu: f64, n: i32, cyr: &mut [f64], cyi: &mut [f64], tol: f64)
 pub(crate) mod zuchk;
 use zuchk::zuchk;  // fn zuchk(yr: f64, yi: f64, nz: &mut i32, ascle: f64, tol: f64)
 
