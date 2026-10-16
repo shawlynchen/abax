@@ -3,6 +3,8 @@ use i1mach::i1mach;  // fn i1mach(i: i32) -> i32
 pub(crate) mod d1mach;
 use d1mach::d1mach;  // fn d1mach(i: i32) -> f64
 
+pub(crate) mod dgamln;
+use dgamln::dgamln;  // fn dgamln(z: f64, ierr: &mut i32) -> f64
 pub(crate) mod zabs;
 use zabs::zabs;    // fn zabs(zr: f64, zi: f64) -> f64
 pub(crate) mod zmlt;
