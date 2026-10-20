@@ -1,5 +1,5 @@
 use crate::rutils::{ISNAN, R_FINITE};
-use crate::consts::{ML_NEGINF, ML_POSINF, M_LN_SQRT_2PI};
+use crate::consts::{ML_NEGINF, ML_POSINF, LN_SQRT_2PI};
 use crate::gammaln::{lgammacor, lgammafn, lgamma};
 use crate::gamma::gammafn;
 
@@ -57,7 +57,7 @@ pub fn lbeta(a: f64, b: f64) -> f64 {
     if p >= 10.0 {
 	    /* p and q are big. */
 	    let corr = lgammacor(p) + lgammacor(q) - lgammacor(p + q);
-	    return f64::ln(q) * - 0.5 + M_LN_SQRT_2PI + corr + (p - 0.5) * f64::ln(p / (p + q)) + q * f64::ln_1p(-p / (p + q));
+	    return f64::ln(q) * - 0.5 + LN_SQRT_2PI + corr + (p - 0.5) * f64::ln(p / (p + q)) + q * f64::ln_1p(-p / (p + q));
     } else if q >= 10.0 {
 	    /* p is small, but q is big. */
 	    let corr = lgammacor(q) - lgammacor(p + q);

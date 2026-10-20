@@ -1,4 +1,4 @@
-use crate::consts::{M_LN_SQRT_2PI, ML_POSINF, ML_NEGINF, M_PI};
+use crate::consts::{LN_SQRT_2PI, ML_POSINF, ML_NEGINF, M_PI};
 use crate::rutils::{ISNAN, chebyshev_eval, sinpi};
 use crate::gammaln::lgammacor;
 use crate::stirlerr::stirlerr;
@@ -204,7 +204,7 @@ pub(crate) fn gammafn(x: f64) -> f64 {
                 i += 1.0;
             }
 	    } else { /* normal case */
-	        value = f64::exp((y - 0.5) * f64::ln(y) - y + M_LN_SQRT_2PI +
+	        value = f64::exp((y - 0.5) * f64::ln(y) - y + LN_SQRT_2PI +
             if 2.0 * y == f64::floor(2.0 * y) {stirlerr(y)} else {lgammacor(y)});
         }
 

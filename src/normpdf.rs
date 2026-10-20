@@ -1,4 +1,4 @@
-use crate::consts::SQRT_2PI;
+use crate::consts::{SQRT_2PI, LN_SQRT_2PI};
 
 /// Normal probability density function (PDF).
 ///
@@ -32,7 +32,11 @@ pub fn normpdf(x: f64, mu: f64, sigma: f64) -> f64 {
 pub fn dnorm(x: f64, mu: f64, sigma: f64, give_log: bool) -> f64 {
     if give_log {
         let z = (x - mu) / sigma;
-        -0.5 * z * z - (sigma * SQRT_2PI).ln()
+        if sigma > 7.1717579868397e307 {
+            -0.5 * z * z - f64::ln(sigma) - LN_SQRT_2PI  // log(sqrt(2*pi)) ≈ 0.9189385332046727
+        } else {
+            -0.5 * z * z - (sigma * SQRT_2PI).ln()
+        }
     } else {
         normpdf(x, mu, sigma)
     }

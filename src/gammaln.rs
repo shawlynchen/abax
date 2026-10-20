@@ -108,9 +108,9 @@ fn lgammafn_sign(x: f64, sgn: &mut i32) -> f64 {
 	    if x > 1.0e17 {
 	        return x * (f64::ln(x) - 1.0);
         } else if x > 4934720.0 {
-	        return M_LN_SQRT_2PI + (x - 0.5) * f64::ln(x) - x;
+	        return LN_SQRT_2PI + (x - 0.5) * f64::ln(x) - x;
         } else {
-            return M_LN_SQRT_2PI + (x - 0.5) * f64::ln(x) - x + lgammacor(x);
+            return LN_SQRT_2PI + (x - 0.5) * f64::ln(x) - x + lgammacor(x);
         }
     }
     /* else: x < -10; y = -x */

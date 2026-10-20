@@ -1,6 +1,6 @@
 use crate::gammaln::lgammafn;
 use crate::gamcdf::lgamma1p;
-use crate::consts::{M_LN_2PI, M_LN_SQRT_2PI};
+use crate::consts::{M_LN_2PI, LN_SQRT_2PI};
 
 /// Computes the Stirling error term for the natural logarithm of the Gamma function.
 ///
@@ -94,7 +94,7 @@ pub(crate) fn stirlerr(n: f64) -> f64 {
     			let l_n: f64 = f64::ln(n);
     			return lgammafn(n) + n * (1.0 - l_n) + (l_n - M_LN_2PI) / 2.0;
     	    } else {
-    			return lgamma1p(n) - (n + 0.5) * f64::ln(n) + n - M_LN_SQRT_2PI;
+    			return lgamma1p(n) - (n + 0.5) * f64::ln(n) + n - LN_SQRT_2PI;
     		}
     	}
     	// 5.25 < n <= 23.5
