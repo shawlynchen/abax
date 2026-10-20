@@ -10,7 +10,7 @@ use crate::amos::zbinu::zbinu;
 /// complex Z in the cut plane -PI < ARG(Z) <= PI. On KODE=2, ZBESJ
 /// returns the scaled functions
 ///
-///     CY(I) = EXP(-ABS(Y))*J(FNU+I-1,Z),  I=1,...,N,  Y=AIMAG(Z)
+/// CY(I) = EXP(-ABS(Y))*J(FNU+I-1,Z),  I=1,...,N,  Y=AIMAG(Z)
 ///
 /// which remove the exponential growth in both half planes.
 #[allow(clippy::too_many_arguments)]

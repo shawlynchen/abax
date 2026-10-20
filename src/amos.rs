@@ -80,3 +80,62 @@ pub(crate) mod zunk2;
 use zunk2::zunk2;  // fn zunk2(zr: f64, zi: f64, fnu: f64, kode: i32, mr: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, tol: f64, elim: f64, alim: f64)
 pub(crate) mod zwrsk;
 use zwrsk::zwrsk;  // fn zwrsk(zrr: f64, zri: f64, fnu: f64, kode: i32, n: i32, yr: &mut [f64], yi: &mut [f64], nz: &mut i32, cwr: &mut [f64; 2], cwi: &mut [f64; 2], tol: f64, elim: f64, alim: f64)
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn demo(zr: f64, zi: f64, fnu: f64, kode: i32, n: i32, label: &str) {
+        let n_usize = n as usize;
+        let mut cyr = vec![0.0f64; n_usize];
+        let mut cyi = vec![0.0f64; n_usize];
+        let mut nz: i32 = 0;
+        let mut ierr: i32 = 0;
+
+        zbesi(zr, zi, fnu, kode, n, &mut cyr, &mut cyi, &mut nz, &mut ierr);
+
+        println!("=== {} ===", label);
+        println!("  Z = {} + {}i, FNU = {}, KODE = {}, N = {}",
+                zr, zi, fnu, kode, n);
+        println!("  IERR = {}, NZ = {}", ierr, nz);
+
+        if ierr != 0 {
+            println!("  (computation halted or flagged an error)");
+        }
+
+        for i in 0..n_usize {
+            let order = fnu + i as f64;
+            println!("  I({}, Z) = {:+.15e} {:+.15e}i", order, cyr[i], cyi[i]);
+        }
+        println!();
+    }
+
+    #[test]
+    fn amos_test() {
+        // Example 1: I(0, 1 + 0i)
+        //   Z = 1, order 0, unscaled.
+        //   Known value: I(0,1) ≈ 1.2660658777520084
+        demo(1.0, 0.0, 0.0, 1, 1, "I(0, 1) unscaled");
+
+        // Example 2: I(0, 1 + 0i), scaled by exp(-|Re Z|) = exp(-1).
+        //   Known value: exp(-1) * I(0,1) ≈ 0.46575960759364043
+        demo(1.0, 0.0, 0.0, 2, 1, "I(0, 1) scaled");
+
+        // Example 3: I(1, 1 + 0i)
+        //   Known value: I(1,1) ≈ 0.5651591039924850
+        demo(1.0, 0.0, 1.0, 1, 1, "I(1, 1) unscaled");
+
+        // Example 4: sequence I(0,1), I(1,1), I(2,1) with N=3.
+        demo(1.0, 0.0, 0.0, 1, 3, "I(0..2, 1) unscaled");
+
+        // Example 5: complex argument Z = 1 + i, order 0.
+        demo(1.0, 1.0, 0.0, 1, 1, "I(0, 1+i) unscaled");
+
+        // Example 6: large |Z| with small order, exercise the asymptotic branch.
+        demo(10.0, 0.0, 0.0, 2, 2, "I(0..1, 10) scaled");
+
+        // Example 7: negative real part, exercise left-half-plane analytic
+        // continuation.
+        demo(-3.0, 2.0, 0.5, 1, 1, "I(0.5, -3+2i) unscaled");
+    }
+}

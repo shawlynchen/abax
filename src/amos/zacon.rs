@@ -7,8 +7,8 @@ use crate::amos::zs1s2::zs1s2;
 
 /// ZACON applies the analytic continuation formula
 ///
-///     K(FNU,ZN*EXP(MP)) = K(FNU,ZN)*EXP(-MP*FNU) - MP*I(FNU,ZN)
-///             MP = PI*MR*CMPLX(0.0,1.0)
+/// K(FNU,ZN*EXP(MP)) = K(FNU,ZN)*EXP(-MP*FNU) - MP*I(FNU,ZN)
+/// MP = PI*MR*CMPLX(0.0,1.0)
 ///
 /// to continue the K function from the right half to the left
 /// half Z plane.

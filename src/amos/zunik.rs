@@ -7,7 +7,7 @@ use crate::amos::zsqrt::zsqrt;
 /// expansions of the I and K functions on IKFLG = 1 or 2
 /// respectively by
 ///
-///     W(FNU,ZR) = PHI*EXP(ZETA)*SUM
+/// W(FNU,ZR) = PHI*EXP(ZETA)*SUM
 ///
 /// where  ZETA = -ZETA1 + ZETA2  or  ZETA1 - ZETA2.
 ///

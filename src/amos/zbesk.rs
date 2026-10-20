@@ -14,7 +14,7 @@ use crate::amos::zuoik::zuoik;
 ///
 /// On KODE=2, ZBESK returns the scaled K functions
 ///
-///     CY(J) = EXP(Z)*K(FNU+J-1,Z),  J=1,...,N
+/// CY(J) = EXP(Z)*K(FNU+J-1,Z),  J=1,...,N
 ///
 /// which remove the exponential behavior in both the left and right
 /// half planes for Z to infinity.

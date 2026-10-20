@@ -322,12 +322,12 @@ const THPI: f64 = 4.71238898038468986e+00;
 /// Y(FNU,Z) or H(I,FNU,Z) I=1,2 for large orders FNU by means of the
 /// uniform asymptotic expansion
 ///
-///     C(FNU,Z) = C1*PHI*( ASUM*AIRY(ARG) + C2*BSUM*DAIRY(ARG) )
+/// C(FNU,Z) = C1*PHI*( ASUM*AIRY(ARG) + C2*BSUM*DAIRY(ARG) )
 ///
 /// for proper choices of C1, C2, AIRY and DAIRY where AIRY is an
 /// Airy function and DAIRY is its derivative.
 ///
-///     (2/3)*FNU*ZETA**1.5 = ZETA1 - ZETA2,
+/// (2/3)*FNU*ZETA**1.5 = ZETA1 - ZETA2,
 ///
 /// ZETA1 = 0.5*FNU*CLOG((1+W)/(1-W)), ZETA2 = FNU*W for scaling
 /// purposes in Airy functions from CAIRY or CBIRY.

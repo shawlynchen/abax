@@ -14,7 +14,7 @@ use crate::amos::zuoik::zuoik;
 ///
 /// On KODE=2, ZBESH returns the scaled Hankel functions
 ///
-///     CY(I) = EXP(-MM*Z*I)*H(M,FNU+J-1,Z),  MM = 3-2*M,  I**2 = -1
+/// CY(I) = EXP(-MM*Z*I)*H(M,FNU+J-1,Z),  MM = 3-2*M,  I**2 = -1
 ///
 /// which removes the exponential behavior in both the upper and lower
 /// half planes.
