@@ -224,3 +224,18 @@ pub fn ncfpdf(x: f64, nu1: f64, nu2: f64, delta: f64) -> f64 {
 
     y
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_ncfpdf() {
+        let x = 2.0;
+        let nu1 = 5.0;
+        let nu2 = 10.0;
+        let delta = 3.0;
+        let result = ncfpdf(x, nu1, nu2, delta); // 0.2492817442645997
+        println!("ncfpdf({}, {}, {}, {}) = {}", x, nu1, nu2, delta, result); 
+    }
+}
