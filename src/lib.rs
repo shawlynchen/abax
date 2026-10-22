@@ -128,6 +128,8 @@ mod tinv;
 pub use tinv::tinv;
 mod ncfcdf;
 use ncfcdf::ncfcdf;
+mod ncfinv;
+use ncfinv::ncfinv;
 mod ncfpdf;
 use ncfpdf::ncfpdf;
 mod nctpdf;
