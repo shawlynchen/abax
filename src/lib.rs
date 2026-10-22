@@ -102,7 +102,7 @@ mod gevcdf;
 pub use gevcdf::gevcdf;
 mod gevinv;
 pub use gevinv::gevinv;
-mod normpdf; // last updated: 2026-9-16
+mod normpdf; // last updated: 2026-10-20
 pub use normpdf::{dnorm, normpdf};
 mod normcdf; // last updated: 2026-9-17
 pub use normcdf::{normcdf, pnorm};
@@ -126,6 +126,7 @@ mod tcdf;
 pub use tcdf::tcdf;
 mod tinv;
 pub use tinv::tinv;
+mod ncfpdf;
 mod nctpdf;
 pub use nctpdf::nctpdf;
 mod nctcdf;

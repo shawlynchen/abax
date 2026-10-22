@@ -94,7 +94,13 @@ pub fn exppdf(x: f64, mu: f64) -> f64 {
         return 0.0;
     }
     let z = x / mu;
-    f64::exp(-z) / mu
+
+    if z < -708.3964185322 {
+        f64::exp(-z - f64::ln(mu))
+    } else {
+        f64::exp(-z) / mu
+    }
+
 }
 
 #[cfg(test)]
